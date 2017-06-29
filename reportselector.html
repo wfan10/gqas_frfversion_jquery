@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Nice Admin back link META information should not be deleted per agreement https://bootstrapmade.com/license -->
+  <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+  <meta name="author" content="GeeksLabs">
+  <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <!-- END Nice Admin meta information -->
+  <link rel="shortcut icon" href="images/icons/favicon.ico">
+  <title>GQAS Report Selector</title>
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- bootstrap theme -->
+  <link href="css/bootstrap-theme.css" rel="stylesheet">
+  <!--external css-->
+  <!-- font icon -->
+  <link href="css/elegant-icons-style.css" rel="stylesheet" />
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- -->
+  <link href="css/jquery.dataTables.css" rel="stylesheet">
+  <link href="css/buttons.dataTables.css" rel="stylesheet">
+  <link href="css/select.dataTables.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/style-responsive.css" rel="stylesheet" />
+  <!-- javascripts -->
+  <!-- underscore -->
+  <script src="js/underscore1.8.3.js"></script>
+  <!-- jquery files -->
+  <script src="js/jquery-2.2.4.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- nice scroll -->
+  <script src="js/jquery.scrollTo.min.js"></script>
+  <script src="js/jquery.nicescroll.js"></script>
+  <!-- Datatable file must come after jQuery stuff -->
+  <script src="js/jquery.dataTables.js"></script>
+  <script src="js/dataTables.buttons.js"></script>
+  <script src="js/dataTables.select.js"></script>
+</head>
+
+<body>
+  <!-- container section start -->
+  <section id="container" class="">
+    <!--header start-->
+    <header class="header dark-bg">
+      <div class="toggle-nav">
+        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+      </div>
+      <span class="toggle-nav1">
+        <img style="height:60px" src="images/icons/Ford-Oval-Pad.png">
+      </span>
+      <!--logo start-->
+      <a href="index.html" target="_self" class="logo">Global Quality Application Services</a>
+      <!--logo end-->
+      <div class="top-nav notification-row">
+        <!-- notificatoin dropdown start-->
+        <ul class="nav pull-right top-menu">
+          <!-- user login dropdown start-->
+          <li class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+              <span class="profile-ava">
+                <img alt="" src="images/icons/awspref.ico">
+              </span>
+              <span class="username">GQAS Help</span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu extended logout">
+              <li class="eborder-top">
+                <a><i class="icon_profile"></i>email: awshelp@ford.com</a>
+              </li>
+              <li>
+                <a><i class="icon_profile"></i>phone: 313-206-2790</a>
+              </li>
+              <li>
+                <a href="https://dept.sp.ford.com/sites/QualityDept/SitePages/Home.aspx" target="_blank"><i class="icon_key_alt"></i>Quality Home</a>
+              </li>
+              <li>
+                <a href="https://comm.extsp.ford.com/sites/awssupplier/Pages/Home.aspx" target="_blank"><i class="icon_key_alt"></i>Warranty Home</a>
+              </li>
+              <li>
+                <a href="http://www.quality.ford.com/aws/aws/documentation/awssepdoc.html" target="_blank"><i class="icon_key_alt"></i>Documentation</a>
+              </li>
+            </ul>
+          </li>
+          <!-- user login dropdown end -->
+        </ul>
+        <!-- notificatoin dropdown end-->
+      </div>
+    </header>
+    <!--header end-->
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start -->
+        <ul class="sidebar-menu">
+          <li class="">
+            <a class="" href="index.html" target="_self">
+              <i class="icon_house_alt"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;" class="">
+              <i class="icon_document_alt"></i>
+              <span>Requests</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="" href="requests.html" target="_self">Request Manager</a></li>
+              <li><a class="" href="usergroups.html" target="_self">Groups Editor</a></li>
+              <li><a class="" href="customfilters.html" target="_self">Custom Filters</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;" class="">
+              <i class="icon_desktop"></i>
+              <span>Reports</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="" href="reports.html" target="_self">Report Manager</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu ">
+            <a href="javascript:;" class="">
+              <i class="icon_documents_alt"></i>
+              <span>Pages</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="" href="filterselector.html" target="_self">Filter Selector</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu ">
+            <a href="javascript:;" class="">
+              <i class="icon_table"></i>
+              <span>Warranty</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="apanel" name="TIS" href="javascript:void(0);"><span>TIS Matrix</span></a></li>
+              <li><a class="apanel" name="RELB" href="javascript:void(0);">Reliability</a></li>
+              <li><a class="apanel" name="TOPN" href="javascript:void(0);">Top N</a></li>
+              <li><a class="apanel" name="CLMLST" href="javascript:void(0);">Claims List</a></li>
+              <li><a class="apanel" name="SBVHST" href="javascript:void(0);">Vehicle Only</a></li>
+              <li><a class="apanel" name="CORCLM" href="javascript:void(0);">Correlated Claims</a></li>
+              <li><a class="apanel" name="ATRHST" href="javascript:void(0);">Attribute History</a></li>
+              <li><a class="apanel" name="TOPNDL" href="javascript:void(0);">Top N Dealer</a></li>
+              <li><a class="apanel" name="MBAND" href="javascript:void(0);">Mileage Band</a></li>
+              <li><a class="apanel" name="DBSUM" href="javascript:void(0);">Database Summary</a></li>
+              <li><a class="apanel" name="DETAIL" href="javascript:void(0);">Claim Detail</a></li>
+              <li><a class="apanel" name="PMATX" href="javascript:void(0);">Claims Matrix</a></li>
+              <li><a class="apanel" name="PTOPN" href="javascript:void(0);">Top N Claims</a></li>
+              <li><a class="apanel" name="EMIS" href="javascript:void(0);">Emissions</a></li>
+              <li><a class="apanel" name="EWIR" href="javascript:void(0);">EWIR</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu ">
+            <a href="javascript:;" class="">
+              <i class="icon_table"></i>
+              <span>QLS</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="apanel" name="TIS" href="javascript:void(0);"><span>TIS Matrix</span></a></li>
+              <li><a class="apanel" name="TOPN" href="javascript:void(0);">Top N</a></li>
+              <li><a class="apanel" name="CLMLST" href="javascript:void(0);">Claims List</a></li>
+              <li><a class="apanel" name="DBSUM" href="javascript:void(0);">Database Summary</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu ">
+            <a href="javascript:;" class="">
+              <i class="icon_table"></i>
+              <span>GQRS</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="apanel" name="GQTGW" href="javascript:void(0);"><span>TGW</span></a></li>
+              <li><a class="apanel" name="GQSAT" href="javascript:void(0);">Satisfaction</a></li>
+              <li><a class="apanel" name="GQLIST" href="javascript:void(0);">List Data</a></li>
+              <li><a class="apanel" name="GQXSTAT" href="javascript:void(0);">(XT)TGW STAT</a></li>
+              <li><a class="apanel" name="GQXFREQ" href="javascript:void(0);">(XT)TGW FREQ</a></li>
+              <li><a class="apanel" name="GQXNSTAT" href="javascript:void(0);">(XT)NON TGW STAT </a></li>
+              <li><a class="apanel" name="GQXNFREQ" href="javascript:void(0);">(XT)NON TGW FREQ</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <!-- page start-->
+        <div class="row">
+          <div class="container-fluid">
+            <div id="TIS" class="panel panel-default">
+              <div class="panel-heading">
+                TIS Matrix
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="RELB" class="panel panel-default">
+              <div class="panel-heading">
+                Reliability
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="logics-relb">
+                                Logics
+                          </label>
+                        <select multiple id="logics-relb" name="logics" class="form-control" required="required">
+                                <option value="Corp" selected>Corporate</option>
+                                <option value="Weekly">Weekly</option>
+                          </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label class="control-label">Options</label>
+                        <select id="options-relb" name="options-relb" class="form-control" required="required">
+                            <optgroup label="Reliability">
+                                <option value="tis_desc:3;tis_esp:0" selected="">Reliability Only</option>
+                                <option value="tis_desc:3;tis_esp:1" >Calendarized Warranty</option>
+                                <option value="tis_desc:3;tis_esp:2" >Unexpended Warranty</option>
+                            <optgroup label="Mileage and TIS">
+                                <option value="tis_desc:4;clm_ytd:0">Mileage with D/O(MOP)</option>
+                                <option value="tis_desc:4;clm_ytd:1">Mileage with D/O(YTD)</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="well well-sm">
+                      <form class="form-horizontal">
+                        <label class="control-label">Default Warranty Limits</label>
+                        <div class="form-group">
+                          <label for="txtStartMile" class="control-label col-lg-3">MIS</label>
+                          <div class="col-lg-9">
+                            <input type="text" class="form-control" id="txtStartMile" value="48" />
+                          </div>
+                          <label for="txtEndMile" class="control-label col-lg-3">Mileage</label>
+                          <div class="col-lg-9">
+                            <input type="text" class="form-control" id="txtEndMile" value="48000" />
+                          </div>
+                          <label for="txtIncreMile" class="control-label col-lg-3">Increment</label>
+                          <div class="col-lg-9">
+                            <input type="text" class="form-control" id="txtIncreMile" value="1000" />
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="costtypes">Cost Types</label>
+                        <select name="costtypes" class="form-control" required="required">
+                                <option value="F_COREAM">Core Amount</option>
+                                <option value="F_CPAID">Customer Paid Amount</option>
+                                <option value="F_DED">Deductible Amount</option>
+                                <option value="F_EXTAMT">Extended Amount</option>
+                                <option value="F_LBRCST">Labor Cost</option>
+                                <option value="F_OWS_LBR_AMT">Labor Invoice Cost</option>
+                                <option value="F_LOP_CS">Labor Op Cost</option>
+                                <option value="F_MATCST">Material Cost</option>
+                                <option value="F_MSCAMD">Misc. Amt (detail)</option>
+                                <option value="F_MSCAMT">Misc. Amt (total)</option>
+                                <option value="F_NETCST">Net Cost</option>
+                                <option value="F_NET+CORE">Net Cost + Core Amt</option>
+                                <option value="F_PT_AMT">Part MarkUp Amount</option>
+                                <option value="F_DLRPD">Repair Dealer Paid Amount</option>
+                                <option value="F_SUBAMT">Subclaim Amt</option>
+                                <option value="F_GRSCST" selected="">Total Cost Gross</option>
+                                <option value="F_CSTPLUSVAT">Total Cost Gross plus VAT</option>
+                                <option value="F_VAT_AMT">VAT Amount</option>
+                            </select>
+                      </div>
+                      <label class="control-label">Additional Data</label>
+                      <div class="form-group">
+                        <input type="checkbox" name="checkbox-relb-umileage" id="checkbox-relb-umileage" autocomplete="off" />
+                        <div class="[ btn-group ]">
+                          <label for="checkbox-relb-umileage" class="[ btn btn-default ]">
+                              <span class="[ glyphicon glyphicon-ok ]"></span>
+                              <span> </span>
+                            </label>
+                          <label for="checkbox-relb-umileage" class="[ btn btn-default active ]">
+                              Unlimited Mileage
+                            </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" name="checkbox-relb-scatter" id="checkbox-relb-scatter" autocomplete="off" />
+                        <div class="[ btn-group ]">
+                          <label for="checkbox-relb-scatter" class="[ btn btn-default ]">
+                              <span class="[ glyphicon glyphicon-ok ]"></span>
+                              <span> </span>
+                            </label>
+                          <label for="checkbox-relb-scatter" class="[ btn btn-default active ]">
+                              Time/Mileage Scatter Plot
+                            </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label">Group Data By System Fields</label>
+                          <div class="form-group">
+                            <a name="orderby" href="orderby.html" class="btn btn-default" role="button">Order By</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label class="control-label">Group Data By Lists (If Available)</label>
+                            <input type="checkbox" name="checkbox-relb-usegrp" id="checkbox-relb-usegrp" autocomplete="off" />
+                            <div class="[ btn-group ]">
+                              <label for="checkbox-relb-usegrp" class="[ btn btn-default ]">
+                              <span class="[ glyphicon glyphicon-ok ]"></span>
+                              <span> </span>
+                            </label>
+                              <label for="checkbox-relb-usegrp" class="[ btn btn-default active ]">
+                              Use Groups
+                            </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-lg-12" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" name="btnSave">
+                            Save Selections</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="TOPN" class="panel panel-default">
+              <div class="panel-heading">
+                Top N
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="CLMLST" class="panel panel-default">
+              <div class="panel-heading">
+                Claims List
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="SBVHST" class="panel panel-default">
+              <div class="panel-heading">
+                Vehicle Only
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="CORCLM" class="panel panel-default">
+              <div class="panel-heading">
+                Correlated Claims
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="ATRHST" class="panel panel-default">
+              <div class="panel-heading">
+                Attribute History
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="TOPNDL" class="panel panel-default">
+              <div class="panel-heading">
+                Top N Dealer
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="MBAND" class="panel panel-default">
+              <div class="panel-heading">
+                Mileage Band
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="DBSUM" class="panel panel-default">
+              <div class="panel-heading">
+                Database Summary
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="logics-dbsum">Logics</label>
+                        <select multiple id="logics-dbsum" name="logics-dbsum" class="form-control" required="required">
+                                <option value="Corp" selected>Corporate</option>
+                                <option value="60">60-Day</option>
+                                <option value="90">90-Day</option>
+                                <option value="120">120-Day</option>
+                                <option value="None" selected>No Logic/All</option>
+                            </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class=form-group>
+                        <label for="options-dbsum">Options</label>
+                        <select id="options-dbsum" name="options-dbsum" class="form-control" required="required">
+                              <optgroup label="YTD Only">
+                                <option value="clm_ytd:2" selected="">Warranty (YTD)</option>
+                                <option value="clm_ytd:4">Vehicles (YTD)</option>
+                                <option value="clm_ytd:6">Correlated</option>
+                                <option value="clm_ytd:1">StopShip</option>
+                              </optgroup>
+                              <optgroup label="All MOP">
+                                <option value="clm_ytd:3">Warranty (MOP)</option>
+                                <option value="clm_ytd:4">Vehicles (MOP)</option>
+                              </optgroup>
+                            </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="corfilter">
+                                Correlated Filter</label>
+                        <select id="corfilter" name="corfilter" class="form-control" required="required">
+                                <option value="na" selected="">Choose One:</option>
+                                <option value="F_DTC_CD">DTC Code</option>
+                                <option value="F_LBROP">Labor Operation Code</option>
+                                <option value="F_PNE_B">Part Num Base (Engr)</option>
+                                <option value="F_PN_B">Part Num Base (Reported)</option>
+                            </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="costtypes">Cost Types</label>
+                        <select id="costtypes" name="costtypes" class="form-control" required="required">
+                                <option value="F_COREAM">Core Amount</option>
+                                <option value="F_CPAID">Customer Paid Amount</option>
+                                <option value="F_DED">Deductible Amount</option>
+                                <option value="F_EXTAMT">Extended Amount</option>
+                                <option value="F_LBRCST">Labor Cost</option>
+                                <option value="F_OWS_LBR_AMT">Labor Invoice Cost</option>
+                                <option value="F_LOP_CS">Labor Op Cost</option>
+                                <option value="F_MATCST">Material Cost</option>
+                                <option value="F_MSCAMD">Misc. Amt (detail)</option>
+                                <option value="F_MSCAMT">Misc. Amt (total)</option>
+                                <option value="F_NETCST">Net Cost</option>
+                                <option value="F_NET+CORE">Net Cost + Core Amt</option>
+                                <option value="F_PT_AMT">Part MarkUp Amount</option>
+                                <option value="F_DLRPD">Repair Dealer Paid Amount</option>
+                                <option value="F_SUBAMT">Subclaim Amt</option>
+                                <option value="F_GRSCST" selected="">Total Cost Gross</option>
+                                <option value="F_CSTPLUSVAT">Total Cost Gross plus VAT</option>
+                                <option value="F_VAT_AMT">VAT Amount</option>
+                            </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label">Group Data By System Fields</label>
+                          <div class="form-group">
+                            <a name="orderby" href="orderby.html" class="btn btn-default" role="button">Order By</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label class="control-label">Group Data By Lists (If Available)</label>
+                            <input type="checkbox" name="fancy-checkbox-default" id="fancy-checkbox-default" autocomplete="off" />
+                            <div class="[ btn-group ]">
+                              <label for="fancy-checkbox-default" class="[ btn btn-default ]">
+                              <span class="[ glyphicon glyphicon-ok ]"></span>
+                              <span> </span>
+                            </label>
+                              <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
+                              Use Groups
+                            </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-lg-12" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" name="btnSave">
+                            Save Selections</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="DETAIL" class="panel panel-default">
+              <div class="panel-heading">
+                Claims Detail
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="PMATX" class="panel panel-default">
+              <div class="panel-heading">
+                Claims Matrix
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="PTOPN" class="panel panel-default">
+              <div class="panel-heading">
+                Top N Claims
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="EMIS" class="panel panel-default">
+              <div class="panel-heading">
+                Emissions
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="emis-type">
+                                Report Type
+                          </label>
+                        <select id="emis-type" class="form-control" required="required">
+                                <option value="REPLC">Replaced Parts</option>
+                                <option value="REPAR">Not Replaced Parts</option>
+                                <option value="SVOL" selected>Sales Volume</option>
+                          </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="well well-sm">
+                      <div class="form-group-radio">
+                        <label class="control-label">Vehicle Counting Rules</label>
+                        <input type="checkbox" class="fancy-radio-custom active" name="emis-counting-checkbox" id="emis-counting-checkbox1" autocomplete="off"
+                        />
+                        <div class="[ btn-group ]">
+                          <label for="emis-counting-checkbox1" class="[ btn btn-default ]">
+                          <span class="[ glyphicon glyphicon-plus ]"></span>
+                          <span class="[ glyphicon glyphicon-minus ]"></span>
+                          </label>
+                          <label for="emis-counting-checkbox1" class="[ btn btn-default active fancy-radio-custom ]">
+                            Based On Use (Emission Rules)
+                          </label>
+                        </div>
+                        <input type="checkbox" class="fancy-radio-custom" name="emis-counting-checkbox" id="emis-counting-checkbox2" autocomplete="off"
+                        />
+                        <div class="[ btn-group ]">
+                          <label for="emis-counting-checkbox2" class="[ btn btn-default ]">
+                          <span class="[ glyphicon glyphicon-plus ]"></span>
+                          <span class="[ glyphicon glyphicon-minus ]"></span>
+                          </label>
+                          <label for="emis-counting-checkbox2" class="[ btn btn-default active fancy-radio-custom ]">
+                            Based On Sales Location
+                          </label>
+                        </div>
+                        <!--
+                        <div class="btn-group-vertical" data-toggle="buttons">
+
+                          <label class="btn btn-default active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Based On Use (Emission Rules)
+                            </label>
+
+                          <label class="btn btn-default">
+                            <input type="radio" name="options" id="option2" autocomplete="off">Based On Sales Location
+                            </label>
+
+                        </div>
+                        -->
+                        <!--
+                        <div>
+                          <input type="checkbox" id="s3" checked="" />
+                          <label class="slider-v2" for="s3"></label>
+
+                          <input type="checkbox" id="s4" />
+                          <label class="slider-v2" for="s4"></label>
+                        </div>
+                        -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="emis-states">States</label>
+                        <select multiple id="emis-states" name="emis-states" class="form-control" required="required">
+                                <option value="*" selected>*All*</option>
+                                <option value="CA">California</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NY">New York</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="VT">Vermont</option>
+                                <option value="WA">Washington</option>                            
+                            </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <div>
+                          <label for="date" class="control-label">End Date</label>
+                          <input type="date" class="form-control" id="date" name="date">
+                        </div>
+                      </div>
+                      <label class="control-label">Group Data By System Fields</label>
+                      <div class="form-group">
+                        <a name="orderby" href="orderby.html" class="btn btn-default" role="button">Order By</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-lg-12" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" name="btnSave">
+                            Save Selections</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="EWIR" class="panel panel-default">
+              <div class="panel-heading">
+                EWIR
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQTGW" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (TGW)
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQSAT" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (Satisfaction)
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQLIST" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (List Data)
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQXSTAT" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (Crosstab) TGW STAT
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQXFREQ" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (Crosstab) TGW FREQ
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQXNSTAT" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (Crosstab) NON TGW STAT
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+            <div id="GQXNFREQ" class="panel panel-default">
+              <div class="panel-heading">
+                GQRS (Crosstab) NON TGW Freq
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="container-fluid">
+            <div class="col-lg-12">
+              <table id="tblReportSelections" class="table table-bordered table-responsive" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>REQ_ID</th>
+                    <th>REPORT_NAME</th>
+                    <th>OPTION_CD</th>
+                    <th>OPTION_DISPLAY</th>
+                    <th class="hidden">CLM_NUM</th>
+                    <th class="hidden">CLM_TYPE</th>
+                    <th class="hidden">REPORT_CD</th>
+                    <th class="hidden">DISPAT_CD</th>
+                    <th class="hidden">TAB_NAME</th>
+                  </tr>
+                </thead>
+                <tbody id="data">
+                  <tr>
+                    <td align="right">2694924</td>
+                    <td>TIS Matrix</td>
+                    <td>WTY</td>
+                    <td>TIS Matrix (Reliability)</td>
+                    <td class="hidden">0</td>
+                    <td class="hidden">16</td>
+                    <td class="hidden">T1</td>
+                    <td class="hidden">TIS</td>
+                    <td class="hidden">RELB</td>
+                  </tr>
+                  <tr>
+                    <td align="right">2694924</td>
+                    <td>Database Summary</td>
+                    <td>WTY</td>
+                    <td>Warranty (YTD)</td>
+                    <td class="hidden">1</td>
+                    <td class="hidden">6</td>
+                    <td class="hidden">DS</td>
+                    <td class="hidden">DBSUM</td>
+                    <td class="hidden">DBSUM</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- page end-->
+      </section>
+      <!--main content end-->
+    </section>
+    <!-- container section end -->
+    <!--custom script for all page-->
+    <script src="scripts/scripts.js"></script>
+    <!-- GQAS Utility Files -->
+    <script src="scripts/jqPlugins.js"></script>
+    <script src="scripts/jqFramework.js"></script>
+    <script>
+      (function ($, win) {
+
+        // hide all panels first
+        $('div.panel').hide();
+        // what happens when the user clicks on a link. 
+        $('a.apanel').on('click', function (evt) {
+          // capture id value 
+          var idVal = $(this).attr("name");
+          // hide all panels 
+          $('div.panel').hide();
+          $('div.panel[id=' + idVal + ']').show();
+        });
+
+        // create the data table. 
+        var table = $('#tblReportSelections').DataTable({
+          scrollY: '70vh',
+          scrollcollapse: true,
+          paging: false,
+          searching: false,
+          select: 'single'
+        });
+
+        table.on('select', function (e, dt, type, index) {
+          if (type === 'row') {
+            //var tabname = table.rows(index).data().pluck('TAB_NAME');
+            var idVal = table.cell(index, 7).data();
+            console.log('idVal is ' + idVal);
+            // find the panel with the tabname and show it. 
+            $('div.panel').hide();
+            $('div.panel[id=' + idVal + ']').show();
+          }
+        });
+
+        //select the first row of the table. 
+        table.row(':eq(0)', {
+          page: 'current'
+        }).select();
+
+        // to make our fancy custom checkbox act like a radio button. 
+        $('input.fancy-radio-custom').on("click", function () {
+          // add a custom class to the check box 
+          var $input = $(this);
+          $input.addClass('active');
+          //
+          var $parent = $input.parent();
+          var classSelector = 'input.fancy-radio-custom';
+          // remove checked attribute and active class from all sibling checkboxes
+          $parent.find($input.siblings(classSelector)).each(function (i, element) {
+            var $element = $(element);
+            $element.removeClass("active");
+          })
+        });
+
+      })(jQuery, window);
+    </script>
+</body>
+
+</html>

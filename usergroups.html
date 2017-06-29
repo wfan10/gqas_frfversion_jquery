@@ -1,0 +1,329 @@
+<!documentTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+  <meta name="author" content="GeeksLabs">
+  <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <link rel="shortcut icon" href="images/icons/favicon.ico">
+  <title>User Groups</title>
+  <!-- font icon -->
+  <link href="css/elegant-icons-style.css" rel="stylesheet" />
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- NICEADMIN Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-theme.css" rel="stylesheet">
+  <!-- Datatable CSS file-->
+  <link href="css/jquery.dataTables.css" rel="stylesheet">
+  <link href="css/buttons.dataTables.css" rel="stylesheet">
+  <link href="css/select.dataTables.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/style-responsive.css" rel="stylesheet">
+  <!-- JAVASCRIPT FILES BEGIN HERE -->
+  <!-- underscore -->
+  <script src="js/underscore1.8.3.js"></script>
+  <!-- jquery files -->
+  <script src="js/jquery-2.2.4.min.js"></script>
+  <!-- jquery plug in files: 
+    scrollto https://plugins.jquery.com/scrollTo/ 
+    nicescroll https://nicescroll.areaaperta.com/ -->
+  <script src="js/jquery.scrollTo.min.js"></script>
+  <script src="js/jquery.nicescroll.js"></script>
+  <!-- -->
+  <script src="js/bootstrap.min.js"></script>
+  <!-- Datatable file must come after jQuery stuff -->
+  <script src="js/jquery.dataTables.js"></script>
+  <script src="js/dataTables.buttons.js"></script>
+  <script src="js/dataTables.select.js"></script>
+</head>
+
+<body class="login-body">
+  <!-- container section start -->
+  <section id="container" class="">
+    <!--header start-->
+    <header class="header dark-bg">
+      <div class="toggle-nav">
+        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+      </div>
+      <span class="toggle-nav1">
+        <img style="height:60px" src="images/icons/Ford-Oval-Pad.png">
+      </span>
+      <!--logo start-->
+      <a href="index.html" target="_self" class="logo">Global Quality Application Services</a>
+      <!--logo end-->
+      <div class="top-nav notification-row">
+        <!-- notificatoin dropdown start-->
+        <ul class="nav pull-right top-menu">
+          <!-- user login dropdown start-->
+          <li class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+              <span class="profile-ava">
+                <img alt="" src="images/icons/awspref.ico">
+              </span>
+              <span class="username">GQAS Help</span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu extended logout">
+              <li class="eborder-top">
+                <a><i class="icon_profile"></i>email: awshelp@ford.com</a>
+              </li>
+              <li>
+                <a><i class="icon_profile"></i>phone: 313-206-2790</a>
+              </li>
+              <li>
+                <a href="https://dept.sp.ford.com/sites/QualityDept/SitePages/Home.aspx" target="_blank"><i class="icon_key_alt"></i>Quality Home</a>
+              </li>
+              <li>
+                <a href="https://comm.extsp.ford.com/sites/awssupplier/Pages/Home.aspx" target="_blank"><i class="icon_key_alt"></i>Warranty Home</a>
+              </li>
+              <li>
+                <a href="http://www.quality.ford.com/aws/aws/documentation/awssepdoc.html" target="_blank"><i class="icon_key_alt"></i>Documentation</a>
+              </li>
+            </ul>
+          </li>
+          <!-- user login dropdown end -->
+        </ul>
+        <!-- notificatoin dropdown end-->
+      </div>
+    </header>
+    <!--header end-->
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start -->
+        <ul class="sidebar-menu">
+          <li class="">
+            <a class="" href="index.html" target="_self">
+              <i class="icon_house_alt"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;" class="">
+              <i class="icon_document_alt"></i>
+              <span>Requests</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="" href="requests.html" target="_self">Request Manager</a></li>             
+              <li><a class="" href="customfilters.html" target="_self">Custom Filters</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;" class="">
+              <i class="icon_desktop"></i>
+              <span>Reports</span>
+              <span class="menu-arrow arrow_carrot-right"></span>
+            </a>
+            <ul class="sub">
+              <li><a class="" href="reports.html" target="_self">Report Manager</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <!-- page start>
+        Page content goes here
+        < page end-->
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">
+              <div id="fltrlist" class="panel panel-default">
+                <div class="panel-heading">
+                  Filter List
+                </div>
+                <div class="panel-body">
+                  <!-- Datatable here -->
+                  <table id="tblFltrSelect" class="table table-bordered table-responsive" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Group</th>
+                        <th>Options</th>
+                        <th>Filters</th>
+                        <th class="hidden">group_name</th>
+                        <th class="hidden">filter_option_list</th>
+                        <th class="hidden">filter_pointer</th>
+                        <th class="hidden">oper_grp_id</th>
+                        <th class="hidden">filter_id</th>
+                        <th class="hidden">filter_loaded</th>
+                        <th class="hidden">filter_use</th>
+                        <th class="hidden">filter_col_type</th>
+                        <th class="hidden">filter_single_sel</th>
+                        <th class="hidden">filter_qas_col1</th>
+                        <th class="hidden">filter_qas_col2</th>
+                        <th class="hidden">filter_qas_col3</th>
+                        <th class="hidden">filter_qas_col4</th>
+                        <th class="hidden">filter_qas_col5</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="panel-footer">
+                  <a id="btnOpt" class="btn btn-default" data-toggle="modal" href="#myModal">Filter Options</a>
+                  <!--a id="btnOpt" class="btn btn-default" data-toggle="modal">Filter Options</a -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div id="fltrValue" class="panel panel-default">
+                <div class="panel-heading">Filter Values</div>
+                <div class="panel-body">
+                  <!-- DataTable here -->
+                  <table id="tblFltrValues" class="table table-bordered table-responsive" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th>DESCRIPTION</th>
+                        <th>VAL_COL1</th>
+                        <th>VAL_COL2</th>
+                        <th>VAL_COL3</th>
+                        <th>VAL_COL4</th>
+                        <th>VAL_COL5</th>
+                        <th class="hidden">GROUP_ID</th>
+                        <th class="hidden">GROUP_OWNER</th>
+                        <th class="hidden">GROUP_NAME</th>
+                    </thead>
+                    <tfoot>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="panel-footer">
+                  <button id="btnVAdd" class="btn btn-default" type="button">Add Values</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Modal dialogs here -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Filter Options</h4>
+            </div>
+            <div class="modal-body">
+              <ul class="nav nav-tabs">
+                <li role="presentation" class="dropdown active">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Operator<span class="caret"></span>
+                              </a>
+                  <ul id="lbOper" class="dropdown-menu">
+                    <script type="text/template" class="opertemplate">
+                      <% _.each( rc.operators, function( item,key,list ){ %>
+                        <li <% print( 'id="' + item.oper_id + '"' ); %> >
+                          <a href="#">
+                            <% print( item.oper_desc ); %>
+                          </a>
+                        </li>
+                        <% }); %>
+                    </script>
+                  </ul>
+                  <input id="lbOperTxt" type="text" class="form-control" value="= (Equals)" idVal="1" aria-label="..." disabled>
+                  <script type="text/javascript">
+                    $("#lbOper").on("click", "li", function() {
+                      var liVal = $(this).text();
+                      var idVal = $(this).attr("id");
+                      var $input = $(this).parent().next("input");
+                      $input.attr("value", $.trim(decodeURI(liVal)));
+                      $input.attr("idVal", $.trim(idVal));
+                    })
+                  </script>
+                </li>
+                <li role="presentation" class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                List Options <span class="caret"></span>
+                              </a>
+                  <ul id="lbOpt" class="dropdown-menu">
+                    <script type="text/template" class="optiontemplate">
+                      <% _.each( rc.options, function( item,key,list ){ %>
+                        <li <% print( 'id="' + item.optId + '"'); %>>
+                          <a href="#">
+                            <% print( item.optDesc ); %>
+                          </a>
+                        </li>
+                        <% }); %>
+                    </script>
+                  </ul>
+                  <input id="lbOptTxt" type="text" class="form-control" value="(V)Values Only" idVal="V" aria-label="..." disabled>
+                  <script type="text/javascript">
+                    $("#lbOpt").on("click", "li", function() {
+                      var liVal = $(this).text();
+                      var idVal = $(this).attr("id");
+                      var $input = $(this).parent().next("input");
+                      $input.attr("value", $.trim(liVal));
+                      $input.attr("idVal", $.trim(idVal));
+                    })
+                  </script>
+                </li>
+                <li role="presentation" class="dropdown">
+                  <a id="validtoggle" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Valid Rows <span class="caret"></span>
+                              </a>
+                  <ul id="lbValid" class="dropdown-menu">
+                    <li id="-"><a href="#">Return All Rows</a></li>
+                    <li id="+"><a href="#">Valid Rows Only</a></li>
+                  </ul>
+                  <input id="lbValidTxt" type="text" class="form-control" value="Return All Rows" idVal="-" aria-label="..." disabled>
+                  <script type="text/javascript">
+                    $("#lbValid").on("click", "li", function() {
+                      var liVal = $(this).text();
+                      var idVal = $(this).attr("id");
+                      var $input = $(this).parent().next("input");
+                      $input.attr("value", $.trim(liVal));
+                      $input.attr("idVal", $.trim(idVal));
+                    });
+                  </script>
+                </li>
+              </ul>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <a id="btnShowInfo" href="#" class="btn btn-primary" role="button">Filter Information</a>
+                </div>
+                <div id="finfo" class="panel-body">
+                  <h3>Filter Information Here</h3> Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                </div>
+              </div>
+              <script type="text/javascript">
+                $("#finfo").hide();
+                $("#btnShowInfo").on("click", function() {
+                  $("#finfo").toggle();
+                });
+              </script>
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+              <button id="optSave" class="btn btn-primary" type="button">Get Values</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal dialogs -->
+    </section>
+    <!--main content end-->
+  </section>
+  <!-- container section end -->
+  <!--custom script for all page-->
+  <script src="scripts/scripts.js"></script>
+  <!-- GQAS Application Files -->
+  <script src="scripts/jqPlugins.js"></script>
+  <script src="scripts/jqFramework.js"></script>
+  <script src="scripts/filterselector.js"></script>
+  <script src="scripts/gqasApp.js"></script>
+</body>
+
+</html>
