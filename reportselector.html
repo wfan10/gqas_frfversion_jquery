@@ -8,6 +8,7 @@
   <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <meta name="keyword" content="glyphicons" href="http://glyphicons.com/"> 
   <!-- END Nice Admin meta information -->
   <link rel="shortcut icon" href="images/icons/favicon.ico">
   <title>GQAS Report Selector</title>
@@ -32,8 +33,9 @@
   <!-- jquery files -->
   <script src="js/jquery-2.2.4.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <!-- nice scroll -->
+  <!-- scrollto info http://flesler.blogspot.com/2007/10/jqueryscrollto.html -->
   <script src="js/jquery.scrollTo.min.js"></script>
+  <!-- nicescroll info https://nicescroll.areaaperta.com/ -->
   <script src="js/jquery.nicescroll.js"></script>
   <!-- Datatable file must come after jQuery stuff -->
   <script src="js/jquery.dataTables.js"></script>
@@ -165,10 +167,10 @@
               <span class="menu-arrow arrow_carrot-right"></span>
             </a>
             <ul class="sub">
-              <li><a class="apanel" name="TIS" href="javascript:void(0);"><span>TIS Matrix</span></a></li>
-              <li><a class="apanel" name="TOPN" href="javascript:void(0);">Top N</a></li>
-              <li><a class="apanel" name="CLMLST" href="javascript:void(0);">Claims List</a></li>
-              <li><a class="apanel" name="DBSUM" href="javascript:void(0);">Database Summary</a></li>
+              <li><a class="apanel" name="TISQLS" href="javascript:void(0);"><span>TIS Matrix</span></a></li>
+              <li><a class="apanel" name="TOPNQLS" href="javascript:void(0);">Top N</a></li>
+              <li><a class="apanel" name="CLMLSTQLS" href="javascript:void(0);">Claims List</a></li>
+              <li><a class="apanel" name="DBSUMQLS" href="javascript:void(0);">Database Summary</a></li>
             </ul>
           </li>
           <li class="sub-menu ">
@@ -198,6 +200,7 @@
         <!-- page start-->
         <div class="row">
           <div class="container-fluid">
+
             <div id="TIS" class="panel panel-default">
               <div class="panel-heading">
                 TIS Matrix
@@ -207,6 +210,19 @@
               <div class="panel-footer">
               </div>
             </div>
+
+
+            <div id="TISQLS" class="panel panel-default">
+              <div class="panel-heading">
+                TIS Matrix [QLS]
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+
+
             <div id="RELB" class="panel panel-default">
               <div class="panel-heading">
                 Reliability
@@ -218,11 +234,11 @@
                       <div class="form-group">
                         <label for="logics-relb">
                                 Logics
-                          </label>
-                        <select multiple id="logics-relb" name="logics" class="form-control" required="required">
-                                <option value="Corp" selected>Corporate</option>
-                                <option value="Weekly">Weekly</option>
-                          </select>
+                        </label>
+                        <ul id="logics-relb" class="list-group checked-list-box">
+                          <li class="list-group-item" value="Corp" data-checked="true">Corporate</li>
+                          <li class="list-group-item" value="Weekly">Weekly</li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -233,8 +249,8 @@
                         <select id="options-relb" name="options-relb" class="form-control" required="required">
                             <optgroup label="Reliability">
                                 <option value="tis_desc:3;tis_esp:0" selected="">Reliability Only</option>
-                                <option value="tis_desc:3;tis_esp:1" >Calendarized Warranty</option>
-                                <option value="tis_desc:3;tis_esp:2" >Unexpended Warranty</option>
+                                <option value="tis_desc:3;tis_esp:1">Calendarized Warranty</option>
+                                <option value="tis_desc:3;tis_esp:2">Unexpended Warranty</option>
                             <optgroup label="Mileage and TIS">
                                 <option value="tis_desc:4;clm_ytd:0">Mileage with D/O(MOP)</option>
                                 <option value="tis_desc:4;clm_ytd:1">Mileage with D/O(YTD)</option>
@@ -287,27 +303,27 @@
                             </select>
                       </div>
                       <label class="control-label">Additional Data</label>
-                      <div class="form-group">
-                        <input type="checkbox" name="checkbox-relb-umileage" id="checkbox-relb-umileage" autocomplete="off" />
+                      <div class="form-group-checkbox">
+                        <input type="checkbox" class="fancy-checkbox-default" id="cb-relb-umileage" autocomplete="off" />
                         <div class="[ btn-group ]">
-                          <label for="checkbox-relb-umileage" class="[ btn btn-default ]">
+                          <label for="cb-relb-umileage" class="[ btn btn-default ]">
                               <span class="[ glyphicon glyphicon-ok ]"></span>
                               <span> </span>
                             </label>
-                          <label for="checkbox-relb-umileage" class="[ btn btn-default active ]">
+                          <label for="cb-relb-umileage" class="[ btn btn-default active ]">
                               Unlimited Mileage
                             </label>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <input type="checkbox" name="checkbox-relb-scatter" id="checkbox-relb-scatter" autocomplete="off" />
+                      <div class="form-group-checkbox">
+                        <input type="checkbox" class="fancy-checkbox-default" id="cb-relb-scatter" autocomplete="off" />
                         <div class="[ btn-group ]">
-                          <label for="checkbox-relb-scatter" class="[ btn btn-default ]">
+                          <label for="cb-relb-scatter" class="[ btn btn-default ]">
                               <span class="[ glyphicon glyphicon-ok ]"></span>
                               <span> </span>
                             </label>
-                          <label for="checkbox-relb-scatter" class="[ btn btn-default active ]">
-                              Time/Mileage Scatter Plot
+                          <label for="cb-relb-scatter" class="[ btn btn-default active ]">
+                              T/M Scatter Plot
                             </label>
                         </div>
                       </div>
@@ -325,15 +341,15 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-12">
-                          <div class="form-group">
+                          <div class="form-group-checkbox">
                             <label class="control-label">Group Data By Lists (If Available)</label>
-                            <input type="checkbox" name="checkbox-relb-usegrp" id="checkbox-relb-usegrp" autocomplete="off" />
+                            <input type="checkbox" name="fancy-checkbox-default" id="cb-relb-usegrp" autocomplete="off" />
                             <div class="[ btn-group ]">
-                              <label for="checkbox-relb-usegrp" class="[ btn btn-default ]">
+                              <label for="cb-relb-usegrp" class="[ btn btn-default ]">
                               <span class="[ glyphicon glyphicon-ok ]"></span>
                               <span> </span>
                             </label>
-                              <label for="checkbox-relb-usegrp" class="[ btn btn-default active ]">
+                              <label for="cb-relb-usegrp" class="[ btn btn-default active ]">
                               Use Groups
                             </label>
                             </div>
@@ -353,6 +369,7 @@
                 </div>
               </div>
             </div>
+
             <div id="TOPN" class="panel panel-default">
               <div class="panel-heading">
                 Top N
@@ -362,6 +379,17 @@
               <div class="panel-footer">
               </div>
             </div>
+
+            <div id="TOPNQLS" class="panel panel-default">
+              <div class="panel-heading">
+                Top N [QLS]
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+
             <div id="CLMLST" class="panel panel-default">
               <div class="panel-heading">
                 Claims List
@@ -371,6 +399,17 @@
               <div class="panel-footer">
               </div>
             </div>
+
+           <div id="CLMLSTQLS" class="panel panel-default">
+              <div class="panel-heading">
+                Claims List [QLS]
+              </div>
+              <div class="panel-body">
+              </div>
+              <div class="panel-footer">
+              </div>
+            </div>
+
             <div id="SBVHST" class="panel panel-default">
               <div class="panel-heading">
                 Vehicle Only
@@ -416,6 +455,7 @@
               <div class="panel-footer">
               </div>
             </div>
+
             <div id="DBSUM" class="panel panel-default">
               <div class="panel-heading">
                 Database Summary
@@ -426,13 +466,15 @@
                     <div class="well well-sm">
                       <div class="form-group">
                         <label for="logics-dbsum">Logics</label>
-                        <select multiple id="logics-dbsum" name="logics-dbsum" class="form-control" required="required">
-                                <option value="Corp" selected>Corporate</option>
-                                <option value="60">60-Day</option>
-                                <option value="90">90-Day</option>
-                                <option value="120">120-Day</option>
-                                <option value="None" selected>No Logic/All</option>
-                            </select>
+
+                        <ul class="list-group checked-list-box">
+                          <li class="list-group-item" value="Corp" data-checked="true">Corporate</li>
+                          <li class="list-group-item" value="60">60-Day</li>
+                          <li class="list-group-item" value="90">90-Day</li>
+                          <li class="list-group-item" value="120">120-Day</li>
+                          <li class="list-group-item" value="None" data-checked="true">No Logic/All</li>
+                        </ul>
+
                       </div>
                     </div>
                   </div>
@@ -505,15 +547,15 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-12">
-                          <div class="form-group">
+                          <div class="form-group-checkbox">
                             <label class="control-label">Group Data By Lists (If Available)</label>
-                            <input type="checkbox" name="fancy-checkbox-default" id="fancy-checkbox-default" autocomplete="off" />
+                            <input type="checkbox" name="fancy-checkbox-default" id="cb-dbsum-usegrp" autocomplete="off" />
                             <div class="[ btn-group ]">
-                              <label for="fancy-checkbox-default" class="[ btn btn-default ]">
+                              <label for="cb-dbsum-usegrp" class="[ btn btn-default ]">
                               <span class="[ glyphicon glyphicon-ok ]"></span>
                               <span> </span>
                             </label>
-                              <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
+                              <label for="cb-dbsum-usegrp" class="[ btn btn-default active ]">
                               Use Groups
                             </label>
                             </div>
@@ -533,6 +575,88 @@
                 </div>
               </div>
             </div>
+
+
+            <div id="DBSUMQLS" class="panel panel-default">
+              <div class="panel-heading">
+                Database Summary [QLS]
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                        <label for="logics-dbsum">Logics</label>
+
+                        <ul class="list-group checked-list-box">
+                          <li class="list-group-item" value="Corp">Corporate</li>
+                          <li class="list-group-item" value="60">60-Day</li>
+                          <li class="list-group-item" value="90">90-Day</li>
+                          <li class="list-group-item" value="120">120-Day</li>
+                          <li class="list-group-item" value="None" data-checked="true">No Logic/All</li>
+                        </ul>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class=form-group>
+                        <label for="options-dbsum">Options</label>
+                        <select id="options-dbsum" name="options-dbsum" class="form-control" required="required">                            
+                          <option value="clm_ytd:8" selected="">QLS (YTD)</option>                                                              
+                          <option value="clm_ytd:9">QLS (MOP)</option>                                                             
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="form-group">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="well well-sm">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label">Group Data By System Fields</label>
+                          <div class="form-group">
+                            <a name="orderby" href="orderby.html" class="btn btn-default" role="button">Order By</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group-checkbox">
+                            <label class="control-label">Group Data By Lists (If Available)</label>
+                            <input type="checkbox" class="fancy-checkbox-default" id="cb-dbsumqls-usegrp" autocomplete="off" />
+                            <div class="[ btn-group ]">
+                              <label for="cb-dbsumqls-usegrp" class="[ btn btn-default ]">
+                              <span class="[ glyphicon glyphicon-ok ]"></span>
+                              <span> </span>
+                            </label>
+                              <label for="cb-dbsumqls-usegrp" class="[ btn btn-default active ]">
+                              Use Groups
+                            </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-lg-12" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" name="btnSave">
+                            Save Selections</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div id="DETAIL" class="panel panel-default">
               <div class="panel-heading">
                 Claims Detail
@@ -584,50 +708,26 @@
                     <div class="well well-sm">
                       <div class="form-group-radio">
                         <label class="control-label">Vehicle Counting Rules</label>
-                        <input type="checkbox" class="fancy-radio-custom active" name="emis-counting-checkbox" id="emis-counting-checkbox1" autocomplete="off"
-                        />
+                        <input type="checkbox" class="fancy-radio-custom active" id="rb-emis-buse" autocomplete="off" />
                         <div class="[ btn-group ]">
-                          <label for="emis-counting-checkbox1" class="[ btn btn-default ]">
+                          <label for="rb-emis-buse" class="[ btn btn-default ]">
                           <span class="[ glyphicon glyphicon-plus ]"></span>
                           <span class="[ glyphicon glyphicon-minus ]"></span>
                           </label>
-                          <label for="emis-counting-checkbox1" class="[ btn btn-default active fancy-radio-custom ]">
-                            Based On Use (Emission Rules)
+                          <label for="rb-emis-buse" class="[ btn btn-default active fancy-radio-custom ]">
+                            Based On Use-Emissions
                           </label>
                         </div>
-                        <input type="checkbox" class="fancy-radio-custom" name="emis-counting-checkbox" id="emis-counting-checkbox2" autocomplete="off"
-                        />
+                        <input type="checkbox" class="fancy-radio-custom" id="rb-emis-bsale" autocomplete="off" />
                         <div class="[ btn-group ]">
-                          <label for="emis-counting-checkbox2" class="[ btn btn-default ]">
+                          <label for="rb-emis-bsale" class="[ btn btn-default ]">
                           <span class="[ glyphicon glyphicon-plus ]"></span>
                           <span class="[ glyphicon glyphicon-minus ]"></span>
                           </label>
-                          <label for="emis-counting-checkbox2" class="[ btn btn-default active fancy-radio-custom ]">
+                          <label for="rb-emis-bsale" class="[ btn btn-default active fancy-radio-custom ]">
                             Based On Sales Location
                           </label>
                         </div>
-                        <!--
-                        <div class="btn-group-vertical" data-toggle="buttons">
-
-                          <label class="btn btn-default active">
-                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Based On Use (Emission Rules)
-                            </label>
-
-                          <label class="btn btn-default">
-                            <input type="radio" name="options" id="option2" autocomplete="off">Based On Sales Location
-                            </label>
-
-                        </div>
-                        -->
-                        <!--
-                        <div>
-                          <input type="checkbox" id="s3" checked="" />
-                          <label class="slider-v2" for="s3"></label>
-
-                          <input type="checkbox" id="s4" />
-                          <label class="slider-v2" for="s4"></label>
-                        </div>
-                        -->
                       </div>
                     </div>
                   </div>
@@ -635,21 +735,25 @@
                     <div class="well well-sm">
                       <div class="form-group">
                         <label for="emis-states">States</label>
-                        <select multiple id="emis-states" name="emis-states" class="form-control" required="required">
-                                <option value="*" selected>*All*</option>
-                                <option value="CA">California</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NY">New York</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="VT">Vermont</option>
-                                <option value="WA">Washington</option>                            
-                            </select>
+                        <div class="well" style="max-height:21vh; overflow: auto;">
+
+                          <ul id="emis-states" class="list-group checked-list-box" required="required">
+                            <li class="list-group-item" value="*" data-checked="true">*All*</li>
+                            <li class="list-group-item" value="CA">California</li>
+                            <li class="list-group-item" value="CT">Connecticut</li>
+                            <li class="list-group-item" value="ME">Maine</li>
+                            <li class="list-group-item" value="MD">Maryland</li>
+                            <li class="list-group-item" value="MA">Massachusetts</li>
+                            <li class="list-group-item" value="NJ">New Jersey</li>
+                            <li class="list-group-item" value="NY">New York</li>
+                            <li class="list-group-item" value="OR">Oregon</li>
+                            <li class="list-group-item" value="PA">Pennsylvania</li>
+                            <li class="list-group-item" value="RI">Rhode Island</li>
+                            <li class="list-group-item" value="VT">Vermont</li>
+                            <li class="list-group-item" value="WA">Washington</li>
+                          </ul>
+
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -807,13 +911,14 @@
     <!-- GQAS Utility Files -->
     <script src="scripts/jqPlugins.js"></script>
     <script src="scripts/jqFramework.js"></script>
+
     <script>
-      (function ($, win) {
+      (function($, win) {
 
         // hide all panels first
         $('div.panel').hide();
         // what happens when the user clicks on a link. 
-        $('a.apanel').on('click', function (evt) {
+        $('a.apanel').on('click', function(evt) {
           // capture id value 
           var idVal = $(this).attr("name");
           // hide all panels 
@@ -830,10 +935,10 @@
           select: 'single'
         });
 
-        table.on('select', function (e, dt, type, index) {
+        table.on('select', function(e, dt, type, index) {
           if (type === 'row') {
             //var tabname = table.rows(index).data().pluck('TAB_NAME');
-            var idVal = table.cell(index, 7).data();
+            var idVal = table.cell(index, 8).data();
             console.log('idVal is ' + idVal);
             // find the panel with the tabname and show it. 
             $('div.panel').hide();
@@ -847,7 +952,7 @@
         }).select();
 
         // to make our fancy custom checkbox act like a radio button. 
-        $('input.fancy-radio-custom').on("click", function () {
+        $('input.fancy-radio-custom').on("click", function() {
           // add a custom class to the check box 
           var $input = $(this);
           $input.addClass('active');
@@ -855,7 +960,7 @@
           var $parent = $input.parent();
           var classSelector = 'input.fancy-radio-custom';
           // remove checked attribute and active class from all sibling checkboxes
-          $parent.find($input.siblings(classSelector)).each(function (i, element) {
+          $parent.find($input.siblings(classSelector)).each(function(i, element) {
             var $element = $(element);
             $element.removeClass("active");
           })

@@ -4,15 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- IMPORTANT NOTICE: 
-    Nice Admin META information should not be deleted per license agreement https://bootstrapmade.com/license 
-  -->
+  <!-- IMPORTANT NOTICE: Nice Admin META information should not be deleted per license agreement https://bootstrapmade.com/license  -->
   <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <meta name="keyword" content="glyphicons" href="http://glyphicons.com/">
   <!-- END Nice Admin meta information -->
   <link rel="shortcut icon" href="images/icons/favicon.ico">
-  <title>Blank | title</title>
+  <title>Order By Filters</title>
   <!-- Bootstrap CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <!-- bootstrap theme -->
@@ -33,6 +32,8 @@
   <!-- jquery files -->
   <script src="js/jquery-2.2.4.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <!-- multiselect plugin from http://crlcu.github.io/multiselect/ -->
+  <script src="js/multiselect.js"></script>
   <!-- scrollto info http://flesler.blogspot.com/2007/10/jqueryscrollto.html -->
   <script src="js/jquery.scrollTo.min.js"></script>
   <!-- nicescroll info https://nicescroll.areaaperta.com/ -->
@@ -135,29 +136,1342 @@
     <section id="main-content">
       <section class="wrapper">
         <!-- page start-->
-        Page content goes here
-
         <!-- Page content notes: 
             1. Use the bootstrap grid system and col-lg-* for columns. col-lg-* is logical for most Ford users who use desktop PC. 
             2. We may add col-md-* and col-sm-* classes for responsive mode in the future based on behavior / need. 
             2. Note the use of panels to include DOM objects as children.  
          -->
-
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12">
               <div class="panel panel-default">
                 <div class="panel-heading">
+                  <h5>
+                    Order By Filter Lists:
+                  </h5>
                 </div>
                 <div class="panel-body">
+                  <div class="well no-padding">
+                    <div>
+                      <ul flevel="0" id="fgflt" class="nav nav-list nav-menu-list-style">
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+                <div class="panel-footer">
+                </div>
+              </div>
+            </div>
+            <script id="ftree" type="text/template" class="template">
+              <li>
+                <label class="tree-toggle nav-header glyphicon-icon-lpad"> 
+                          <span class="glyphicon glyphicon-list-alt"  style="padding-left:{{pleft}}px; padding-right:5px;"></span>  
+                          <a value="{{filterid}}" href="#">{{fdesc}}</a>
+                      </label>
+                <ul fgrp="{{fgrp}}" flevel="{{flevel}}" class="nav nav-list tree bullets">
+                </ul>
+              </li>
+            </script>
+            <script>
+              var listItems = [{
+                "fgrp": "00",
+                "flevel": 1,
+                "filterid": "F_GFLT_ALLCOL",
+                "fdesc": "Standard Filters"
+              }, {
+                "fgrp": "01",
+                "flevel": 2,
+                "filterid": "F_GFLT_ALLVEH",
+                "fdesc": "Vehicle Filters"
+              }, {
+                "fgrp": "01",
+                "flevel": 3,
+                "filterid": "F_GFLT_MVP",
+                "fdesc": "MVP Filters"
+              }, {
+                "fgrp": "01",
+                "flevel": 3,
+                "filterid": "F_GFLT_TRACE",
+                "fdesc": "Traceability Filters"
+              }, {
+                "fgrp": "02",
+                "flevel": 2,
+                "filterid": "F_GFLT_ALLCLM",
+                "fdesc": "Claim Filters"
+              }, {
+                "fgrp": "02",
+                "flevel": 3,
+                "filterid": "F_GFLT_DTC",
+                "fdesc": "DTC/Session Filters"
+              }, {
+                "fgrp": "02",
+                "flevel": 3,
+                "filterid": "F_GFLT_OWS",
+                "fdesc": "OWS Filters"
+              }, {
+                "fgrp": "02",
+                "flevel": 3,
+                "filterid": "F_GFLT_SWR",
+                "fdesc": "SWR Filters"
+              }, {
+                "fgrp": "02",
+                "flevel": 3,
+                "filterid": "F_GFLT_PRT",
+                "fdesc": "Part/Labor Filters"
+              }, {
+                "fgrp": "03",
+                "flevel": 2,
+                "filterid": "F_GFLT_ACB",
+                "fdesc": "ACB Filters"
+              }, {
+                "fgrp": "03",
+                "flevel": 2,
+                "filterid": "F_GFLT_ECB",
+                "fdesc": "ECB Filters"
+              }, {
+                "fgrp": "03",
+                "flevel": 2,
+                "filterid": "F_GFLT_ER",
+                "fdesc": "Emission Filters"
+              }, {
+                "fgrp": "05",
+                "flevel": 2,
+                "filterid": "F_GFLT_GCQIS",
+                "fdesc": "GCQIS Filters"
+              }, {
+                "fgrp": "98",
+                "flevel": 1,
+                "filterid": "F_GFLT_CUSTOM",
+                "fdesc": "Custom Filters"
+              }, {
+                "fgrp": "99",
+                "flevel": 1,
+                "filterid": "F_GFLT_CUSTOB",
+                "fdesc": "Custom Order By"
+              }];
+
+              // base level 
+              var level = -1;
+              // previous level flag
+              var prevgrp = 'aa';
+              var prevlev = 0;
+              // padding left variable 
+              var pleft = 10;
+              // ul header 
+              //var ulhead = '<ul fgrp="{{fgrp}}" flevel="{{flevel}}" class="nav nav-list tree bullets">';
+              // template to add collapsible li items
+              var template = $.trim($('#ftree').html());
+              // what picture to set for folder 
+              var glyph = ['glyphicon-list-alt', 'glyphicon-folder-close'];
+
+              // go through the json list in order
+              $.each(listItems, function (indx, obj) {
+                  //
+                  var grpAdded = false;
+                  var htmlfrag = '';
+                  // set the base level 
+                  if (level == -1) {
+                    level = obj.flevel;
+                  };
+                  // what is the parent level 
+                  var tab = obj.flevel - level;
+                  // 
+                  htmlfrag += template.replace(/{{fgrp}}/ig, obj.fgrp)
+                    .replace(/{{flevel}}/ig, obj.flevel)
+                    .replace(/{{pleft}}/ig, (pleft * obj.flevel))
+                    .replace(/{{filterid}}/ig, obj.filterid)
+                    .replace(/{{fdesc}}/ig, obj.fdesc);
+
+                  // find the ul with the correct level           
+                  $parent = $('#fgflt');
+                  if (tab > 0) {
+                    // find the last ul tag with the correct parent level 
+                    $parent = $parent.find('ul[flevel="' + tab + '"]').eq(-1);
+                  }
+
+                  // append the html fragment
+                  $parent.append(htmlfrag);
+
+                  // find the direct child and change the picture.    
+                  $parent.prev('label').find('span.glyphicon')
+                    .removeClass(glyph[0])
+                    .addClass(glyph[1]);
+                }
+
+              );
+            </script>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-sm-5">
+                      <h5>Available Order By Filters:</h5>
+                    </div>
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                      <h5>Selected Order By Filters:</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-5">
+                      <select name="from[]" id="multiselect1" class="form-control" size="15" multiple="multiple">
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                      <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                      <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                      <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                      <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                    </div>
+                    <div class="col-sm-5">
+                      <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple">                    
+                      </select>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <button type="button" id="multiselect_move_up" class="btn btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                        </div>
+                        <div class="col-sm-6">
+                          <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  window.optItems = [{
+                    "filtid": "F_ACB_BF_DSGN",
+                    "fdesc": "ACB Bin Flag - Design"
+                  }, {
+                    "filtid": "F_ACB_BF_PROC",
+                    "fdesc": "ACB Bin Flag - Process"
+                  }, {
+                    "filtid": "F_ACB_BF_SDSGN",
+                    "fdesc": "ACB Bin Flag - Supp Design"
+                  }, {
+                    "filtid": "F_ACB_BF_SPROC",
+                    "fdesc": "ACB Bin Flag - Supp Process"
+                  }, {
+                    "filtid": "F_ACB_CCC",
+                    "fdesc": "ACB CCC"
+                  }, {
+                    "filtid": "F_ACB_CONC",
+                    "fdesc": "ACB Concern Code"
+                  }, {
+                    "filtid": "F_ACB_CONC_T",
+                    "fdesc": "ACB Concern Type Code"
+                  }, {
+                    "filtid": "F_ACB_FUNC",
+                    "fdesc": "ACB Function Code"
+                  }, {
+                    "filtid": "F_ACB_PDI_FNF",
+                    "fdesc": "ACB PDI Found not Fixed"
+                  }, {
+                    "filtid": "F_ACB_PDI_INT",
+                    "fdesc": "ACB PDI Intermittent"
+                  }, {
+                    "filtid": "F_ACB_PDI_LAF",
+                    "fdesc": "ACB PDI Latent/Aftermarket"
+                  }, {
+                    "filtid": "F_ACB_PDI_PMO",
+                    "fdesc": "ACB PDI Process - Missed Op"
+                  }, {
+                    "filtid": "F_ACB_PDI_PSM",
+                    "fdesc": "ACB PDI Process - Std Mod"
+                  }, {
+                    "filtid": "F_ACB_PRT",
+                    "fdesc": "ACB Part (Item) Code"
+                  }, {
+                    "filtid": "F_ACB_POSA",
+                    "fdesc": "ACB Position A Code"
+                  }, {
+                    "filtid": "F_ACB_POSB",
+                    "fdesc": "ACB Position B Code"
+                  }, {
+                    "filtid": "F_ACB_POSC",
+                    "fdesc": "ACB Position C Code"
+                  }, {
+                    "filtid": "F_ACB_POSD",
+                    "fdesc": "ACB Position D Code"
+                  }, {
+                    "filtid": "F_ACB_VFG",
+                    "fdesc": "ACB VFG Code"
+                  }, {
+                    "filtid": "F_ACB_AWS_CCC",
+                    "fdesc": "AWS CCC (pre ACB)"
+                  }, {
+                    "filtid": "F_ACB_AWS_FUNC",
+                    "fdesc": "AWS Function (pre ACB)"
+                  }, {
+                    "filtid": "F_ACB_AWS_VFG",
+                    "fdesc": "AWS VFG (pre ACB)"
+                  }, {
+                    "filtid": "F_GCQISPB",
+                    "fdesc": "Adjusted Part Base"
+                  }, {
+                    "filtid": "F_GCQISPF_OB",
+                    "fdesc": "Adjusted Part Full OB"
+                  }, {
+                    "filtid": "F_GCQISPP",
+                    "fdesc": "Adjusted Part Prefix"
+                  }, {
+                    "filtid": "F_GCQISPS",
+                    "fdesc": "Adjusted Part Suffix"
+                  }, {
+                    "filtid": "F_ADJ_CD",
+                    "fdesc": "Adjustment Code"
+                  }, {
+                    "filtid": "F_OWS_ADJ_RSN2",
+                    "fdesc": "Adjustment Reason Code 2"
+                  }, {
+                    "filtid": "F_OWS_ADJ_RSN2",
+                    "fdesc": "Adjustment Reason Code 2"
+                  }, {
+                    "filtid": "F_OWS_ADJ_RSN3",
+                    "fdesc": "Adjustment Reason Code 3"
+                  }, {
+                    "filtid": "F_OWS_ADJ_RSN3",
+                    "fdesc": "Adjustment Reason Code 3"
+                  }, {
+                    "filtid": "F_AIRCOND",
+                    "fdesc": "Air Conditioning [AC]"
+                  }, {
+                    "filtid": "F_ALTAMP",
+                    "fdesc": "Alternator Amperage Code"
+                  }, {
+                    "filtid": "F_ABS_CD",
+                    "fdesc": "Antilock Brakes"
+                  }, {
+                    "filtid": "F_PLNT",
+                    "fdesc": "Assembly Plant [AAG]"
+                  }, {
+                    "filtid": "F_AUDDSK",
+                    "fdesc": "Audio Disk [IBF]"
+                  }, {
+                    "filtid": "F_AXLF_COM_CD",
+                    "fdesc": "Axle Front Code"
+                  }, {
+                    "filtid": "F_AXLF_PLT_CD",
+                    "fdesc": "Axle Plant Front Code"
+                  }, {
+                    "filtid": "F_AXLR_PLT_CD",
+                    "fdesc": "Axle Plant Rear Code"
+                  }, {
+                    "filtid": "F_AXLRATIO",
+                    "fdesc": "Axle Ratio"
+                  }, {
+                    "filtid": "F_AXLR_COM_CD",
+                    "fdesc": "Axle Rear Code"
+                  }, {
+                    "filtid": "F_AXLTYPE",
+                    "fdesc": "Axle Type"
+                  }, {
+                    "filtid": "F_BATAMP",
+                    "fdesc": "Battery Amperage Code"
+                  }, {
+                    "filtid": "F_BOD_VIN",
+                    "fdesc": "Body Style (NA VIN based)"
+                  }, {
+                    "filtid": "F_BODYCAB",
+                    "fdesc": "Body/Cab Type [BS/CA]"
+                  }, {
+                    "filtid": "F_BRKCD",
+                    "fdesc": "Brake Code"
+                  }, {
+                    "filtid": "F_BRAKE_TYPE",
+                    "fdesc": "Brake Type"
+                  }, {
+                    "filtid": "F_CPG",
+                    "fdesc": "CPG (Causal Part Grouping)"
+                  }, {
+                    "filtid": "F_ER_CARBF",
+                    "fdesc": "Carb Flag"
+                  }, {
+                    "filtid": "F_OWS_CARR_CD",
+                    "fdesc": "Carrier Code"
+                  }, {
+                    "filtid": "F_OWS_CARR_CD",
+                    "fdesc": "Carrier Code"
+                  }, {
+                    "filtid": "F_OWS_CARR_DOC",
+                    "fdesc": "Carrier Delivery Document No"
+                  }, {
+                    "filtid": "F_OWS_CARR_DOC",
+                    "fdesc": "Carrier Delivery Document No"
+                  }, {
+                    "filtid": "F_CAUSL",
+                    "fdesc": "Causal Flag"
+                  }, {
+                    "filtid": "F_CAUSL",
+                    "fdesc": "Causal Flag"
+                  }, {
+                    "filtid": "F_OWS_CLM_CD",
+                    "fdesc": "Claim Code"
+                  }, {
+                    "filtid": "F_OWS_CLM_CD",
+                    "fdesc": "Claim Code"
+                  }, {
+                    "filtid": "F_CLM_CT",
+                    "fdesc": "Claim Count Flag"
+                  }, {
+                    "filtid": "F_OWS_CLM_SUB",
+                    "fdesc": "Claim Sub Code"
+                  }, {
+                    "filtid": "F_OWS_CLM_SUB",
+                    "fdesc": "Claim Sub Code"
+                  }, {
+                    "filtid": "F_OWS_CLM_TYP2",
+                    "fdesc": "Claim Type Code 2"
+                  }, {
+                    "filtid": "F_OWS_CLM_TYP2",
+                    "fdesc": "Claim Type Code 2"
+                  }, {
+                    "filtid": "F_CLRACCNT",
+                    "fdesc": "Color Accent"
+                  }, {
+                    "filtid": "F_PAINT",
+                    "fdesc": "Color Paint"
+                  }, {
+                    "filtid": "F_CLRTRIM",
+                    "fdesc": "Color Trim"
+                  }, {
+                    "filtid": "F_COND",
+                    "fdesc": "Condition Code"
+                  }, {
+                    "filtid": "F_CONDOLD_FAP",
+                    "fdesc": "Condition Code Old (FAP)"
+                  }, {
+                    "filtid": "F_CNTRYBLT",
+                    "fdesc": "Country Built"
+                  }, {
+                    "filtid": "F_CNTRYREP",
+                    "fdesc": "Country Repaired"
+                  }, {
+                    "filtid": "F_CNTRYSLD",
+                    "fdesc": "Country Sold"
+                  }, {
+                    "filtid": "F_OWS_COV_CAT",
+                    "fdesc": "Coverage Category"
+                  }, {
+                    "filtid": "F_OWS_COV_CAT",
+                    "fdesc": "Coverage Category"
+                  }, {
+                    "filtid": "F_OWS_COV_CAT2",
+                    "fdesc": "Coverage Category 2"
+                  }, {
+                    "filtid": "F_OWS_COV_CAT2",
+                    "fdesc": "Coverage Category 2"
+                  }, {
+                    "filtid": "F_CUR-PRD_DT",
+                    "fdesc": "Current - Production Date"
+                  }, {
+                    "filtid": "F_CCC",
+                    "fdesc": "Customer Concern Code"
+                  }, {
+                    "filtid": "F_DTC_CD",
+                    "fdesc": "DTC Code"
+                  }, {
+                    "filtid": "F_DTC_CD",
+                    "fdesc": "DTC Code"
+                  }, {
+                    "filtid": "F_MON_CD",
+                    "fdesc": "DTC Monitor/Group"
+                  }, {
+                    "filtid": "F_MON_CD",
+                    "fdesc": "DTC Monitor/Group"
+                  }, {
+                    "filtid": "F_DTC_TP",
+                    "fdesc": "DTC Type"
+                  }, {
+                    "filtid": "F_DTC_TP",
+                    "fdesc": "DTC Type"
+                  }, {
+                    "filtid": "F_OWS_DMG_AREA",
+                    "fdesc": "Damage Area Code"
+                  }, {
+                    "filtid": "F_OWS_DMG_AREA",
+                    "fdesc": "Damage Area Code"
+                  }, {
+                    "filtid": "F_OWS_DMG_CND",
+                    "fdesc": "Damage Condition Code"
+                  }, {
+                    "filtid": "F_OWS_DMG_CND",
+                    "fdesc": "Damage Condition Code"
+                  }, {
+                    "filtid": "F_OWS_DMG_SVRT",
+                    "fdesc": "Damage Severity Code"
+                  }, {
+                    "filtid": "F_OWS_DMG_SVRT",
+                    "fdesc": "Damage Severity Code"
+                  }, {
+                    "filtid": "F_DAYSLOT",
+                    "fdesc": "Days on Dealer Lot"
+                  }, {
+                    "filtid": "F_DAYS_SALE",
+                    "fdesc": "Days until Sale"
+                  }, {
+                    "filtid": "F_DLR_CNTR_ORD",
+                    "fdesc": "Dealer Country (Ordering)"
+                  }, {
+                    "filtid": "F_DLR_CNTR_SAL",
+                    "fdesc": "Dealer Country (Sales)"
+                  }, {
+                    "filtid": "F_DLR_CNTR_SHP",
+                    "fdesc": "Dealer Country (Shipping)"
+                  }, {
+                    "filtid": "F_DLR_CNTR_STK",
+                    "fdesc": "Dealer Country (Stocking)"
+                  }, {
+                    "filtid": "F_DELIV",
+                    "fdesc": "Delivery Type"
+                  }, {
+                    "filtid": "F_DEMO_DT",
+                    "fdesc": "Demo Date"
+                  }, {
+                    "filtid": "F_DRIVETYP",
+                    "fdesc": "Drive Type [DR]"
+                  }, {
+                    "filtid": "F_DR_SH",
+                    "fdesc": "Driveshaft Code"
+                  }, {
+                    "filtid": "F_ECB_BF_DSGN",
+                    "fdesc": "ECB Bin Flag - Design"
+                  }, {
+                    "filtid": "F_ECB_BF_PROC",
+                    "fdesc": "ECB Bin Flag - Process"
+                  }, {
+                    "filtid": "F_ECB_BF_SDSGN",
+                    "fdesc": "ECB Bin Flag - Supp Design"
+                  }, {
+                    "filtid": "F_ECB_BF_SPROC",
+                    "fdesc": "ECB Bin Flag - Supp Process"
+                  }, {
+                    "filtid": "F_ECB_BIN",
+                    "fdesc": "ECB Bin Status"
+                  }, {
+                    "filtid": "F_ECB_CCC",
+                    "fdesc": "ECB CCC"
+                  }, {
+                    "filtid": "F_ECB_CONC",
+                    "fdesc": "ECB Concern Code"
+                  }, {
+                    "filtid": "F_ECB_CONC_T",
+                    "fdesc": "ECB Concern Type Code"
+                  }, {
+                    "filtid": "F_ECB_CONC_T",
+                    "fdesc": "ECB Concern Type Code"
+                  }, {
+                    "filtid": "F_ECB_F",
+                    "fdesc": "ECB Flag"
+                  }, {
+                    "filtid": "F_ECB_FUNC",
+                    "fdesc": "ECB Function Code"
+                  }, {
+                    "filtid": "F_ECB_PDI_FNF",
+                    "fdesc": "ECB PDI Found not Fixed"
+                  }, {
+                    "filtid": "F_ECB_PDI_INT",
+                    "fdesc": "ECB PDI Intermittent"
+                  }, {
+                    "filtid": "F_ECB_PDI_LAF",
+                    "fdesc": "ECB PDI Latent/Aftermarket"
+                  }, {
+                    "filtid": "F_ECB_PDI_PMO",
+                    "fdesc": "ECB PDI Process - Missed Op"
+                  }, {
+                    "filtid": "F_ECB_PDI_PSM",
+                    "fdesc": "ECB PDI Process - Std Mod"
+                  }, {
+                    "filtid": "F_ECB_PRT",
+                    "fdesc": "ECB Part (Item) Code"
+                  }, {
+                    "filtid": "F_ECB_PRT_CONC",
+                    "fdesc": "ECB Part-Concern"
+                  }, {
+                    "filtid": "F_ECB_POSA",
+                    "fdesc": "ECB Position A Code"
+                  }, {
+                    "filtid": "F_ECB_POSB",
+                    "fdesc": "ECB Position B Code"
+                  }, {
+                    "filtid": "F_ECB_POSC",
+                    "fdesc": "ECB Position C Code"
+                  }, {
+                    "filtid": "F_ECB_POSD",
+                    "fdesc": "ECB Position D Code"
+                  }, {
+                    "filtid": "F_ECB_VFG",
+                    "fdesc": "ECB VFG Code"
+                  }, {
+                    "filtid": "F_ECB_VRT",
+                    "fdesc": "ECB VRT Code"
+                  }, {
+                    "filtid": "F_ECB_EVB_PDI_FNF",
+                    "fdesc": "ECB_EVB PDI Found not Fixed"
+                  }, {
+                    "filtid": "F_ECB_EVB_PDI_INT",
+                    "fdesc": "ECB_EVB PDI Intermittent"
+                  }, {
+                    "filtid": "F_ECB_EVB_PDI_LAF",
+                    "fdesc": "ECB_EVB PDI Latent/Aftermarket"
+                  }, {
+                    "filtid": "F_ECB_EVB_PDI_PMO",
+                    "fdesc": "ECB_EVB PDI Process - Missed Op"
+                  }, {
+                    "filtid": "F_ECB_EVB_PDI_PSM",
+                    "fdesc": "ECB_EVB PDI Process - Std Mod"
+                  }, {
+                    "filtid": "F_ECI_COMM",
+                    "fdesc": "ECI Commodity Code"
+                  }, {
+                    "filtid": "F_ECI_COMM_L1",
+                    "fdesc": "ECI Commodity Level 1"
+                  }, {
+                    "filtid": "F_ECI_COMM_L2",
+                    "fdesc": "ECI Commodity Level 2"
+                  }, {
+                    "filtid": "F_ECI_COMM_L3",
+                    "fdesc": "ECI Commodity Level 3"
+                  }, {
+                    "filtid": "F_ECI_SYMP",
+                    "fdesc": "ECI Symptom Code"
+                  }, {
+                    "filtid": "F_ESP_AC",
+                    "fdesc": "ESP Action"
+                  }, {
+                    "filtid": "F_ESP_FB",
+                    "fdesc": "ESP Fleet Branch"
+                  }, {
+                    "filtid": "F_ESP_MC",
+                    "fdesc": "ESP Mile Coverage"
+                  }, {
+                    "filtid": "F_ESP_PG",
+                    "fdesc": "ESP Plan Group"
+                  }, {
+                    "filtid": "F_ESP_PN",
+                    "fdesc": "ESP Plan Name"
+                  }, {
+                    "filtid": "F_ESP_PY",
+                    "fdesc": "ESP Plan Year"
+                  }, {
+                    "filtid": "F_ESP_ST",
+                    "fdesc": "ESP Status"
+                  }, {
+                    "filtid": "F_ESP_TC",
+                    "fdesc": "ESP Time Coverage"
+                  }, {
+                    "filtid": "F_ER_AG",
+                    "fdesc": "Emissions Agency Code"
+                  }, {
+                    "filtid": "F_ER_CER",
+                    "fdesc": "Emissions Cert Type"
+                  }, {
+                    "filtid": "F_EMISS_CD",
+                    "fdesc": "Emissions Code [EM]"
+                  }, {
+                    "filtid": "F_EMSDSUFX",
+                    "fdesc": "Emissions Decal Suffix"
+                  }, {
+                    "filtid": "F_ERPN_B",
+                    "fdesc": "Emissions Part Num Base"
+                  }, {
+                    "filtid": "F_ECALB",
+                    "fdesc": "Engine Calibration"
+                  }, {
+                    "filtid": "F_ER_FAM",
+                    "fdesc": "Engine Family"
+                  }, {
+                    "filtid": "F_ENG_GLB",
+                    "fdesc": "Engine Global"
+                  }, {
+                    "filtid": "F_ENG_GLB_FAM",
+                    "fdesc": "Engine Global Family"
+                  }, {
+                    "filtid": "F_ENG",
+                    "fdesc": "Engine [EN]"
+                  }, {
+                    "filtid": "F_EXPRT_FL",
+                    "fdesc": "Export Veh Flag"
+                  }, {
+                    "filtid": "F_FAP_GSDB",
+                    "fdesc": "FAP GSDB"
+                  }, {
+                    "filtid": "F_FAP_CAUSL_OB",
+                    "fdesc": "FAP Part Num Full OB (Causal)"
+                  }, {
+                    "filtid": "F_FAP_ENGR_OB",
+                    "fdesc": "FAP Part Num Full OB (Engr)"
+                  }, {
+                    "filtid": "F_FAP_PN_OB",
+                    "fdesc": "FAP Part Num Full OB (Reported)"
+                  }, {
+                    "filtid": "F_AUTH",
+                    "fdesc": "FCC Authorization"
+                  }, {
+                    "filtid": "F_BIN",
+                    "fdesc": "FCC Bin Type"
+                  }, {
+                    "filtid": "F_MILGE",
+                    "fdesc": "FCC Mileage Code"
+                  }, {
+                    "filtid": "F_REG",
+                    "fdesc": "FCC Region"
+                  }, {
+                    "filtid": "F_RPT",
+                    "fdesc": "FCC Reporting Type"
+                  }, {
+                    "filtid": "F_TERM",
+                    "fdesc": "FCC Term Code"
+                  }, {
+                    "filtid": "F_OWS_FLD_SRV",
+                    "fdesc": "Field Service Option Code"
+                  }, {
+                    "filtid": "F_OWS_FLD_SRV",
+                    "fdesc": "Field Service Option Code"
+                  }, {
+                    "filtid": "F_FLEET",
+                    "fdesc": "Fleet / Non-Fleet"
+                  }, {
+                    "filtid": "F_FRONT_GAWR",
+                    "fdesc": "Front Gross Axle Rate"
+                  }, {
+                    "filtid": "F_SEATFR",
+                    "fdesc": "Front Seat [FS]"
+                  }, {
+                    "filtid": "F_FRONT_SUSP",
+                    "fdesc": "Front Suspension"
+                  }, {
+                    "filtid": "F_FUELTYP",
+                    "fdesc": "Fuel Type"
+                  }, {
+                    "filtid": "F_FUELTYP_E",
+                    "fdesc": "Fuel Type - Engine"
+                  }, {
+                    "filtid": "F_PD_FUNC",
+                    "fdesc": "Function"
+                  }, {
+                    "filtid": "F_GCQIS_CMT",
+                    "fdesc": "GCQIS Comment"
+                  }, {
+                    "filtid": "F_GCQIS_CMTT",
+                    "fdesc": "GCQIS Comment Type"
+                  }, {
+                    "filtid": "F_GCQIS_L1EPB",
+                    "fdesc": "GCQIS L1 Eng Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L1EPP",
+                    "fdesc": "GCQIS L1 Eng Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L1EPS",
+                    "fdesc": "GCQIS L1 Eng Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_L1SPB",
+                    "fdesc": "GCQIS L1 Serv Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L1SPP",
+                    "fdesc": "GCQIS L1 Serv Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L1SPS",
+                    "fdesc": "GCQIS L1 Serv Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_L2EPB",
+                    "fdesc": "GCQIS L2 Eng Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L2EPP",
+                    "fdesc": "GCQIS L2 Eng Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L2EPS",
+                    "fdesc": "GCQIS L2 Eng Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_L2SPB",
+                    "fdesc": "GCQIS L2 Serv Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L2SPP",
+                    "fdesc": "GCQIS L2 Serv Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L2SPS",
+                    "fdesc": "GCQIS L2 Serv Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_L3EPB",
+                    "fdesc": "GCQIS L3 Eng Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L3EPP",
+                    "fdesc": "GCQIS L3 Eng Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L3EPS",
+                    "fdesc": "GCQIS L3 Eng Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_L3SPB",
+                    "fdesc": "GCQIS L3 Serv Part Base"
+                  }, {
+                    "filtid": "F_GCQIS_L3SPP",
+                    "fdesc": "GCQIS L3 Serv Part Prefix"
+                  }, {
+                    "filtid": "F_GCQIS_L3SPS",
+                    "fdesc": "GCQIS L3 Serv Part Suffix"
+                  }, {
+                    "filtid": "F_GCQIS_LDDT",
+                    "fdesc": "GCQIS Receive Date"
+                  }, {
+                    "filtid": "F_GCQIS_ID",
+                    "fdesc": "GCQIS Record ID"
+                  }, {
+                    "filtid": "F_GCQIS_RON",
+                    "fdesc": "GCQIS Repair Order Num"
+                  }, {
+                    "filtid": "F_GCQIS_SUPP",
+                    "fdesc": "GCQIS Supplier"
+                  }, {
+                    "filtid": "F_GCQIS_TNI",
+                    "fdesc": "GCQIS TNI Flag"
+                  }, {
+                    "filtid": "F_OWS_GCSC_CD",
+                    "fdesc": "GCSC Code"
+                  }, {
+                    "filtid": "F_OWS_GCSC_CD",
+                    "fdesc": "GCSC Code"
+                  }, {
+                    "filtid": "F_GVW_CL",
+                    "fdesc": "GVW Class"
+                  }, {
+                    "filtid": "F_GL",
+                    "fdesc": "General Ledger"
+                  }, {
+                    "filtid": "F_OWS_HLD_IND",
+                    "fdesc": "Hold At Pre-Validation Indicator"
+                  }, {
+                    "filtid": "F_OWS_HLD_IND",
+                    "fdesc": "Hold At Pre-Validation Indicator"
+                  }, {
+                    "filtid": "F_OWS_TRT_LOSS",
+                    "fdesc": "In Transit Loss/Damage Code"
+                  }, {
+                    "filtid": "F_OWS_TRT_LOSS",
+                    "fdesc": "In Transit Loss/Damage Code"
+                  }, {
+                    "filtid": "F_INSTRUM",
+                    "fdesc": "Instrument Code [HCA]"
+                  }, {
+                    "filtid": "F_LBRHRS",
+                    "fdesc": "Labor Hours"
+                  }, {
+                    "filtid": "F_LBROP",
+                    "fdesc": "Labor Operation Code"
+                  }, {
+                    "filtid": "F_LBROP",
+                    "fdesc": "Labor Operation Code"
+                  }, {
+                    "filtid": "F_LOADMO",
+                    "fdesc": "Load Month"
+                  }, {
+                    "filtid": "F_LOADYR",
+                    "fdesc": "Load Year"
+                  }, {
+                    "filtid": "F_MIL_FL",
+                    "fdesc": "MIL Flag"
+                  }, {
+                    "filtid": "F_MIL_FL",
+                    "fdesc": "MIL Flag"
+                  }, {
+                    "filtid": "F_MVP_PRT_BASE",
+                    "fdesc": "MVP Part Base"
+                  }, {
+                    "filtid": "F_MVP_PRT_PREF",
+                    "fdesc": "MVP Part Prefix"
+                  }, {
+                    "filtid": "F_MVP_PRT_SUFF",
+                    "fdesc": "MVP Part Suffix"
+                  }, {
+                    "filtid": "F_MVP_SUPP_PARC",
+                    "fdesc": "MVP Supplier Parent Code (clm)"
+                  }, {
+                    "filtid": "F_MVP_SUPP_PARV",
+                    "fdesc": "MVP Supplier Parent Code (veh)"
+                  }, {
+                    "filtid": "F_MVP2_SUPP_PARN",
+                    "fdesc": "MVP Supplier Parent Code (vin)"
+                  }, {
+                    "filtid": "F_MVP_SUPP_SITC",
+                    "fdesc": "MVP Supplier Site Code (clm)"
+                  }, {
+                    "filtid": "F_MVP_SUPP_SITV",
+                    "fdesc": "MVP Supplier Site Code (veh)"
+                  }, {
+                    "filtid": "F_MVP2_SUPP_SITN",
+                    "fdesc": "MVP Supplier Site Code (vin)"
+                  }, {
+                    "filtid": "F_MRKTDER",
+                    "fdesc": "Market Derived [MD]"
+                  }, {
+                    "filtid": "F_MIRR_DRV",
+                    "fdesc": "Mirror-Driver [BSD]"
+                  }, {
+                    "filtid": "F_MIRR_PAS",
+                    "fdesc": "Mirror-Passenger [BSF]"
+                  }, {
+                    "filtid": "F_MEXPCD",
+                    "fdesc": "Misc. Expense Code"
+                  }, {
+                    "filtid": "F_MDLYR_MFG",
+                    "fdesc": "Model Year (Manufacturing)"
+                  }, {
+                    "filtid": "F_MDLYR_SLS",
+                    "fdesc": "Model Year (Sales)"
+                  }, {
+                    "filtid": "F_ORIG_CCC",
+                    "fdesc": "Original CCC"
+                  }, {
+                    "filtid": "F_OUTLBR",
+                    "fdesc": "Outside Labor Flag"
+                  }, {
+                    "filtid": "F_OUTLBR",
+                    "fdesc": "Outside Labor Flag"
+                  }, {
+                    "filtid": "F_OUTMAT",
+                    "fdesc": "Outside Material Flag"
+                  }, {
+                    "filtid": "F_OUTMAT",
+                    "fdesc": "Outside Material Flag"
+                  }, {
+                    "filtid": "F_PT_ENG_PLT",
+                    "fdesc": "PT Engine Plant"
+                  }, {
+                    "filtid": "F_PT_ENG_REG",
+                    "fdesc": "PT Engine Region Built"
+                  }, {
+                    "filtid": "F_PT_TRN_PLT",
+                    "fdesc": "PT Trans Plant"
+                  }, {
+                    "filtid": "F_PT_TRN_REG",
+                    "fdesc": "PT Trans Region Built"
+                  }, {
+                    "filtid": "F_OWS_APPL_CD",
+                    "fdesc": "Part Appeal Action Code"
+                  }, {
+                    "filtid": "F_OWS_APPL_CD",
+                    "fdesc": "Part Appeal Action Code"
+                  }, {
+                    "filtid": "F_CPN_B",
+                    "fdesc": "Part Num Base (Causal)"
+                  }, {
+                    "filtid": "F_CPN_B",
+                    "fdesc": "Part Num Base (Causal)"
+                  }, {
+                    "filtid": "F_PNE_B",
+                    "fdesc": "Part Num Base (Engr)"
+                  }, {
+                    "filtid": "F_PNE_B",
+                    "fdesc": "Part Num Base (Engr)"
+                  }, {
+                    "filtid": "F_PN_B",
+                    "fdesc": "Part Num Base (Reported)"
+                  }, {
+                    "filtid": "F_PN_B",
+                    "fdesc": "Part Num Base (Reported)"
+                  }, {
+                    "filtid": "F_PN_CSL_OB",
+                    "fdesc": "Part Num Full OB (Causal)"
+                  }, {
+                    "filtid": "F_PN_ENG_OB",
+                    "fdesc": "Part Num Full OB (Engr)"
+                  }, {
+                    "filtid": "F_PN_REP_OB",
+                    "fdesc": "Part Num Full OB (Reported)"
+                  }, {
+                    "filtid": "F_CPN_P",
+                    "fdesc": "Part Num Prefix (Causal)"
+                  }, {
+                    "filtid": "F_CPN_P",
+                    "fdesc": "Part Num Prefix (Causal)"
+                  }, {
+                    "filtid": "F_PNE_P",
+                    "fdesc": "Part Num Prefix (Engr)"
+                  }, {
+                    "filtid": "F_PNE_P",
+                    "fdesc": "Part Num Prefix (Engr)"
+                  }, {
+                    "filtid": "F_PN_P",
+                    "fdesc": "Part Num Prefix (Reported)"
+                  }, {
+                    "filtid": "F_PN_P",
+                    "fdesc": "Part Num Prefix (Reported)"
+                  }, {
+                    "filtid": "F_CPN_S",
+                    "fdesc": "Part Num Suffix (Causal)"
+                  }, {
+                    "filtid": "F_CPN_S",
+                    "fdesc": "Part Num Suffix (Causal)"
+                  }, {
+                    "filtid": "F_PNE_S",
+                    "fdesc": "Part Num Suffix (Engr)"
+                  }, {
+                    "filtid": "F_PNE_S",
+                    "fdesc": "Part Num Suffix (Engr)"
+                  }, {
+                    "filtid": "F_PN_S",
+                    "fdesc": "Part Num Suffix (Reported)"
+                  }, {
+                    "filtid": "F_PN_S",
+                    "fdesc": "Part Num Suffix (Reported)"
+                  }, {
+                    "filtid": "F_PWRANT",
+                    "fdesc": "Power Antenna [ICD]"
+                  }, {
+                    "filtid": "F_OWS_RPR_CD",
+                    "fdesc": "Predefined Repair Code"
+                  }, {
+                    "filtid": "F_OWS_RPR_CD",
+                    "fdesc": "Predefined Repair Code"
+                  }, {
+                    "filtid": "F_OWS_APR_ACT1",
+                    "fdesc": "Prior Approval Activity Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_ACT1",
+                    "fdesc": "Prior Approval Activity Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_ACT2",
+                    "fdesc": "Prior Approval Activity Code2"
+                  }, {
+                    "filtid": "F_OWS_APR_ACT2",
+                    "fdesc": "Prior Approval Activity Code2"
+                  }, {
+                    "filtid": "F_OWS_APR_GEN1",
+                    "fdesc": "Prior Approval Random Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_GEN1",
+                    "fdesc": "Prior Approval Random Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_GEN2",
+                    "fdesc": "Prior Approval Random Code2"
+                  }, {
+                    "filtid": "F_OWS_APR_GEN2",
+                    "fdesc": "Prior Approval Random Code2"
+                  }, {
+                    "filtid": "F_OWS_APR_SUB1",
+                    "fdesc": "Prior Approval Subactiv Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_SUB1",
+                    "fdesc": "Prior Approval Subactiv Code1"
+                  }, {
+                    "filtid": "F_OWS_APR_SUB2",
+                    "fdesc": "Prior Approval Subactiv Code2"
+                  }, {
+                    "filtid": "F_OWS_APR_SUB2",
+                    "fdesc": "Prior Approval Subactiv Code2"
+                  }, {
+                    "filtid": "F_CUTOFF",
+                    "fdesc": "Prior Cutoff Date"
+                  }, {
+                    "filtid": "F_PRODMO",
+                    "fdesc": "Production Month"
+                  }, {
+                    "filtid": "F_PROD_WEEK",
+                    "fdesc": "Production Week"
+                  }, {
+                    "filtid": "F_PTENGGRP",
+                    "fdesc": "QB Fuel Type"
+                  }, {
+                    "filtid": "F_GQB_WCC",
+                    "fdesc": "QB Global Hardware"
+                  }, {
+                    "filtid": "F_GQB_WCC_SUB",
+                    "fdesc": "QB Global Sub Groups"
+                  }, {
+                    "filtid": "F_PTTRANSGRP",
+                    "fdesc": "QB Transmission Type"
+                  }, {
+                    "filtid": "F_RDA_BODY",
+                    "fdesc": "RDA Body Code"
+                  }, {
+                    "filtid": "F_RADIO",
+                    "fdesc": "Radio [IBA]"
+                  }, {
+                    "filtid": "F_R_CARP",
+                    "fdesc": "Red Carpet Lease"
+                  }, {
+                    "filtid": "F_RGN_BLT",
+                    "fdesc": "Region Built"
+                  }, {
+                    "filtid": "F_RGN_RPR",
+                    "fdesc": "Region Repaired"
+                  }, {
+                    "filtid": "F_RGN_SALE",
+                    "fdesc": "Region Sold"
+                  }, {
+                    "filtid": "F_RLSE_DT",
+                    "fdesc": "Release Date"
+                  }, {
+                    "filtid": "F_REMAN_INS",
+                    "fdesc": "Reman Install"
+                  }, {
+                    "filtid": "F_REMAN_MON",
+                    "fdesc": "Reman Installation Month"
+                  }, {
+                    "filtid": "F_REMAN_RPR",
+                    "fdesc": "Reman Repair"
+                  }, {
+                    "filtid": "F_REMAN_TYP",
+                    "fdesc": "Reman Type"
+                  }, {
+                    "filtid": "F_DLR_AC",
+                    "fdesc": "Repair Dealer Area Code"
+                  }, {
+                    "filtid": "F_DLRCTY",
+                    "fdesc": "Repair Dealer City"
+                  }, {
+                    "filtid": "F_RPRDLR",
+                    "fdesc": "Repair Dealer Code"
+                  }, {
+                    "filtid": "F_RPR_D_LANG",
+                    "fdesc": "Repair Dealer Language"
+                  }, {
+                    "filtid": "F_RPRST",
+                    "fdesc": "Repair Dealer State"
+                  }, {
+                    "filtid": "F_DLR_ZP",
+                    "fdesc": "Repair Dealer Zip Code"
+                  }, {
+                    "filtid": "F_RPRMO",
+                    "fdesc": "Repair Month"
+                  }, {
+                    "filtid": "F_RPRPLC",
+                    "fdesc": "Replace Flag"
+                  }, {
+                    "filtid": "F_RPRPLC",
+                    "fdesc": "Replace Flag"
+                  }, {
+                    "filtid": "F_SWR_CC",
+                    "fdesc": "SWR Commodity Code"
+                  }, {
+                    "filtid": "F_DLRSEL",
+                    "fdesc": "Sell Dealer Code"
+                  }, {
+                    "filtid": "F_SLS_D_LANG",
+                    "fdesc": "Sell Dealer Language"
+                  }, {
+                    "filtid": "F_DLRST",
+                    "fdesc": "Sell Dealer State"
+                  }, {
+                    "filtid": "F_DLRSZP",
+                    "fdesc": "Sell Dealer Zip Code"
+                  }, {
+                    "filtid": "F_BRKSER",
+                    "fdesc": "Service Brake [SB]"
+                  }, {
+                    "filtid": "F_SES_CNT_F",
+                    "fdesc": "Session Clm Cnt Flag"
+                  }, {
+                    "filtid": "F_SES_CLM_CONF",
+                    "fdesc": "Session Clm Join Conf"
+                  }, {
+                    "filtid": "F_SES_COMP_ID",
+                    "fdesc": "Session Comp ID"
+                  }, {
+                    "filtid": "F_SES_WCC",
+                    "fdesc": "Session Comp WCC"
+                  }, {
+                    "filtid": "F_SES_DTC",
+                    "fdesc": "Session DTC"
+                  }, {
+                    "filtid": "F_SES_IND_METH",
+                    "fdesc": "Session Diag Method"
+                  }, {
+                    "filtid": "F_SES_FF_TYPE",
+                    "fdesc": "Session FF Type"
+                  }, {
+                    "filtid": "F_SES_IND_CD",
+                    "fdesc": "Session Indictment CD"
+                  }, {
+                    "filtid": "F_SES_MODULE",
+                    "fdesc": "Session Module"
+                  }, {
+                    "filtid": "F_SES_SYMPTOM",
+                    "fdesc": "Session Symptom"
+                  }, {
+                    "filtid": "F_SHIP_DT",
+                    "fdesc": "Ship Date"
+                  }, {
+                    "filtid": "F_SND_SYS",
+                    "fdesc": "Sound System [IDA]"
+                  }, {
+                    "filtid": "F_SRSSYS",
+                    "fdesc": "Source System"
+                  }, {
+                    "filtid": "F_OWS_SPC_VEH",
+                    "fdesc": "Special Use Vehicle"
+                  }, {
+                    "filtid": "F_OWS_SPC_VEH",
+                    "fdesc": "Special Use Vehicle"
+                  }, {
+                    "filtid": "F_STAT_GEVIS",
+                    "fdesc": "Status Code (GEVIS)"
+                  }, {
+                    "filtid": "F_STAT",
+                    "fdesc": "Status Code (NAVIS)"
+                  }, {
+                    "filtid": "F_STAT_SOVID",
+                    "fdesc": "Status Code (SOVID)"
+                  }, {
+                    "filtid": "F_SUBGL",
+                    "fdesc": "Sub Ledger"
+                  }, {
+                    "filtid": "F_GRP_SITE",
+                    "fdesc": "Supplier Group Site"
+                  }, {
+                    "filtid": "F_SYNC_GEN_CD",
+                    "fdesc": "Sync Gen"
+                  }, {
+                    "filtid": "F_SYNC_NAV_CD",
+                    "fdesc": "Sync Nav Embedded"
+                  }, {
+                    "filtid": "F_TIRE_SYMP",
+                    "fdesc": "TEWS Symptom Code"
+                  }, {
+                    "filtid": "F_TIS_CR",
+                    "fdesc": "TIS"
+                  }, {
+                    "filtid": "F_TRBRND",
+                    "fdesc": "Tire Manufacturer [D3Y]"
+                  }, {
+                    "filtid": "F_TRSIZ",
+                    "fdesc": "Tire Size"
+                  }, {
+                    "filtid": "F_TR_ASSEMBLY",
+                    "fdesc": "Trace Assembly Line"
+                  }, {
+                    "filtid": "F_TRACE_COMM",
+                    "fdesc": "Trace Commodity Code"
+                  }, {
+                    "filtid": "F_TRACE_COMM",
+                    "fdesc": "Trace Commodity Code"
+                  }, {
+                    "filtid": "F_TRACE_FULL",
+                    "fdesc": "Trace Full Number"
+                  }, {
+                    "filtid": "F_TRACE_FULL",
+                    "fdesc": "Trace Full Number"
+                  }, {
+                    "filtid": "F_TRACE_PLANT",
+                    "fdesc": "Trace Plant Code"
+                  }, {
+                    "filtid": "F_TRACE_PDATE",
+                    "fdesc": "Trace Production Date"
+                  }, {
+                    "filtid": "F_TRC_SCAN_DT",
+                    "fdesc": "Trace Scan Date"
+                  }, {
+                    "filtid": "F_TRACE_SHIFT",
+                    "fdesc": "Trace Shift"
+                  }, {
+                    "filtid": "F_TRAC_CTR",
+                    "fdesc": "Traction Control [FEF]"
+                  }, {
+                    "filtid": "F_TXN",
+                    "fdesc": "Transaction Code"
+                  }, {
+                    "filtid": "F_CMT_ENG_FLAG",
+                    "fdesc": "Translation Status"
+                  }, {
+                    "filtid": "F_TRN_GLB",
+                    "fdesc": "Transmission Global"
+                  }, {
+                    "filtid": "F_TRN_GLB_FAM",
+                    "fdesc": "Transmission Global Family"
+                  }, {
+                    "filtid": "F_QBTRANS_TYPE",
+                    "fdesc": "Transmission Type"
+                  }, {
+                    "filtid": "F_TRANS",
+                    "fdesc": "Transmission [TR]"
+                  }, {
+                    "filtid": "F_VFG",
+                    "fdesc": "VFG"
+                  }, {
+                    "filtid": "F_VEH_CT",
+                    "fdesc": "Vehicle Count Flag"
+                  }, {
+                    "filtid": "F_VL_FAM",
+                    "fdesc": "Vehicle Family Code"
+                  }, {
+                    "filtid": "F_AWS_VL",
+                    "fdesc": "Vehicle Line AWS"
+                  }, {
+                    "filtid": "F_VL_GLB",
+                    "fdesc": "Vehicle Line Global"
+                  }, {
+                    "filtid": "F_QAS_VL",
+                    "fdesc": "Vehicle Line WERS [VL]"
+                  }, {
+                    "filtid": "F_VEHMOD",
+                    "fdesc": "Vehicle Modifier"
+                  }, {
+                    "filtid": "F_PLATFORM_GLB",
+                    "fdesc": "Vehicle Platform Global"
+                  }, {
+                    "filtid": "F_VEHTYP",
+                    "fdesc": "Vehicle Type"
+                  }, {
+                    "filtid": "F_VERSER",
+                    "fdesc": "Version/Series [VS/SE]"
+                  }, {
+                    "filtid": "F_WCC",
+                    "fdesc": "WCC"
+                  }, {
+                    "filtid": "F_WCCGP",
+                    "fdesc": "WCC 2-Digit"
+                  }, {
+                    "filtid": "F_WCCMJ",
+                    "fdesc": "WCC Major Area (1-Digit)"
+                  }, {
+                    "filtid": "F_WERS_FAM_CD",
+                    "fdesc": "WERS Family Code"
+                  }, {
+                    "filtid": "F_WERS_FUL_CD",
+                    "fdesc": "WERS Full Code"
+                  }, {
+                    "filtid": "F_REACQU",
+                    "fdesc": "WSI (Warranty Status Indicator)"
+                  }, {
+                    "filtid": "F_OWS_DT",
+                    "fdesc": "Warranty Start Date (Orig)"
+                  }, {
+                    "filtid": "F_WARRMO",
+                    "fdesc": "Warranty Start Month"
+                  }, {
+                    "filtid": "F_WARRORMO",
+                    "fdesc": "Warranty Start Month (Orig)"
+                  }, {
+                    "filtid": "F_WHEEL",
+                    "fdesc": "Wheel Size Code"
+                  }, {
+                    "filtid": "F_WHSL_DT",
+                    "fdesc": "Wholesale Date"
+                  }];
+                </script>
+                <script id="fromlist" type="text/template" class="template">
+                  <option value="{{filtid}}">{{fdesc}}</option>
+                </script>
+                <script>
+                  // trim the template 
+                  var template = $.trim($('#fromlist').html());
+                  var htmlFrag = '';
+                  // go through the json list in order
+                  $.each(window.optItems, function (indx, obj) {
+                    htmlFrag += template.replace(/{{filtid}}/ig, obj.filtid)
+                      .replace(/{{fdesc}}/ig, obj.fdesc);
+                  });
+                  $('#multiselect1').append(htmlFrag);
+                </script>
                 <div class="panel-footer">
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <!-- page end-->
       </section>
     </section>
@@ -170,8 +1484,26 @@
   <script src="scripts/jqPlugins.js"></script>
   <script src="scripts/jqFramework.js"></script>
   <script>
-    (function($, win) {
+    (function ($, win) {
       // Your javascript code here. 
+      // tree code here. 
+      $('.tree-toggle').parent().children('ul.tree').toggle(200);
+
+      $('.tree-toggle').click(function () {
+        $(this).parent().children('ul.tree').toggle(200);
+      });
+
+      $('#multiselect').multiselect({
+        right: '#js_multiselect_to_1',
+        rightAll: '#js_right_All_1',
+        rightSelected: '#js_right_Selected_1',
+        leftSelected: '#js_left_Selected_1',
+        leftAll: '#js_left_All_1',
+        search: {
+          left: '<input type="text" name="q" class="form-control" placeholder="Search..." />'
+        }
+      });
+      
     })(jQuery, window);
   </script>
 </body>
